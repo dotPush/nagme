@@ -4,9 +4,7 @@ run();
 
 async function run() {
 
-    try {
-        await client.connect();
-    
+    try {    
         await client.query(`
             DROP TABLE IF EXISTS nags;
             DROP TABLE IF EXISTS categories;
