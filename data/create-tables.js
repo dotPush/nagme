@@ -20,7 +20,7 @@ async function run() {
                 id SERIAL PRIMARY KEY NOT NULL,
                 task VARCHAR(256) NOT NULL,
                 notes VARCHAR(512),
-                start_time TIME NOT NULL(hh:mm:ss),
+                start_time TIME NOT NULL,
                 interval INT,
                 period VARCHAR(16),
                 user_id INT NOT NULL REFERENCES users(id)
