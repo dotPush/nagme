@@ -8,7 +8,15 @@ async function run() {
     try {
         // run a query to create tables
         await client.query(`
-            CREATE TABLE nags (
+        CREATE TABLE users (
+            id SERIAL PRIMARY KEY NOT NULL,
+            push_api_key VARCHAR(256),
+            email VARCHAR(256) NOT NULL,
+            display_name VARCHAR(256) NOT NULL,
+            password_hash VARCHAR(512) NOT NULL
+        );
+        
+        CREATE TABLE nags (
                 id SERIAL PRIMARY KEY NOT NULL,
                 task VARCHAR(256) NOT NULL,
                 notes VARCHAR(512),
@@ -18,13 +26,7 @@ async function run() {
                 user_id INT NOT NULL REFERENCES users(id)
             );
 
-            CREATE TABLE users (
-                id SERIAL PRIMARY KEY NOT NULL,
-                push_api_key VARCHAR(256),
-                email VARCHAR(256) NOT NULL,
-                display_name VARCHAR(256) NOT NULL,
-                password_hash VARCHAR(512) NOT NULL
-            );
+            
         `);
 
         console.log('create tables complete');
