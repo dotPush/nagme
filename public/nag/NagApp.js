@@ -3,9 +3,9 @@ import Header from '../common/Header.js';
 import Loading from '../common/Loading.js';
 import AddNag from './AddNag.js';
 import NagList from './NagList.js';
-import { getNags, addTodo, updateTodo, removeTodo } from '../services/todo-api.js';
+import { getNags, addNag, updateNag, removeNag } from '../services/nagme-api.js';
 
-class TodoApp extends Component {
+class NagApp extends Component {
 
     async onRender(dom) {
         const header = new Header({ title: 'My Nags' });
@@ -17,7 +17,7 @@ class TodoApp extends Component {
         const loading = new Loading({ loading: true });
         dom.appendChild(loading.renderDOM());
 
-        const addTodoSection = new AddTodo({
+        const addNagSection = new AddNag({
             onAdd: async todo => {
                 loading.update({ loading: true });
                 // clear prior error
@@ -25,7 +25,7 @@ class TodoApp extends Component {
 
                 try {
                     // part 1: do work on the server
-                    const saved = await addTodo(todo);
+                    const saved = await addNag(todo);
                     
                     // part 2: integrate back into our list
                     const { nags } = this.state;
@@ -45,9 +45,9 @@ class TodoApp extends Component {
                 }
             }
         });
-        main.appendChild(addTodoSection.renderDOM());
+        main.appendChild(addNagSection.renderDOM());
 
-        const todoList = new TodoList({ 
+        const todoList = new NagList({ 
             nags: [],
             onUpdate: async todo => {
                 loading.update({ loading: true });
@@ -56,7 +56,7 @@ class TodoApp extends Component {
 
                 try {
                     // part 1: do work on the server
-                    const updated = await updateTodo(todo);
+                    const updated = await updateNag(todo);
                     
                     // part 2: integrate back into our list
                     const { nags } = this.state;
@@ -83,7 +83,7 @@ class TodoApp extends Component {
 
                 try {
                     // part 1: do work on the server
-                    await removeTodo(todo.id);
+                    await removeNag(todo.id);
                     
                     // part 2: integrate back into our list
                     const { nags } = this.state;        
@@ -137,4 +137,4 @@ class TodoApp extends Component {
     }
 }
 
-export default TodoApp;
+export default NagApp;

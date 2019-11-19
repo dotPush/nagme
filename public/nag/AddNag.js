@@ -1,4 +1,4 @@
-import Component from './Component.js';
+import Component from '../Component.js';
 
 class AddNag extends Component {
 
@@ -40,7 +40,6 @@ class AddNag extends Component {
             <label for="startTime">Start Time</label>
             <input type="time" id="startTime" name="time" required value="12:00">
         </p>
-
 
         <p>
             <label for="interval">Interval (in minutes)</label>
