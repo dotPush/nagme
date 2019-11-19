@@ -10,7 +10,7 @@ if (!token && !(location.pathname === '/' || location.pathname === '/index.html'
     location = `/?${searchParams.toString()}`;
 }
 
-const fetchWithError = async (url, options) => {
+const fetchWithError = async(url, options) => {
     if (token) {
         options = options || {};
         options.headers = options.headers || {};
