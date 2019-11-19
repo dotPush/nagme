@@ -2,7 +2,7 @@ import Component from '../Component.js';
 
 class Header extends Component {
     onRender(dom) {
-        if(localStorage.getItem('USER')) {
+        if (localStorage.getItem('USER')) {
             const button = dom.querySelector('.log-out');
             button.classList.remove('hidden');
 
@@ -14,16 +14,15 @@ class Header extends Component {
     }
 
     renderHTML() {
-        const title = this.props.title || 'Futurama Quotes';
+        const title = this.props.title || 'NagMe';
 
         return /*html*/`
             <header>
-                <img class="logo" src="assets/alchemy-logo.png" alt="Alchemy Code Lab Logo">
+               
                 <h1>${title}</h1>
                 <nav>
                     <a href="./">Home</a>
-                    <a href="./quotes.html">Quotes</a>
-                    <a href="./favorites.html">Favorites</a>
+                    <a href="./about-us.html">About Us</a>
                 </nav>
                 <button class="log-out hidden">Log Out</button>
             </header>

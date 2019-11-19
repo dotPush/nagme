@@ -2,7 +2,7 @@ import Component from '../Component.js';
 import Header from '../common/Header.js';
 import SignUp from './SignUp.js';
 import SignIn from './SignIn.js';
-import { signUp as userSignUp, signIn as userSignIn } from '../services/quote-api.js';
+import { signUp as userSignUp, signIn as userSignIn } from '../services/nagme-api.js';
 
 function success(user) {
     localStorage.setItem('USER', JSON.stringify(user));
