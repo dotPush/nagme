@@ -1,0 +1,33 @@
+.nav-logo {
+    width: 30%;
+    height: auto;
+
+}
+
+.logo {
+
+  
+  text-align:center;
+
+
+}
+
+header {
+    
+    background-color: #43cfec;
+    width: auto;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    padding: 5px;
+    justify-content: flex-end;
+
+
+}
+

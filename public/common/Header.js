@@ -18,14 +18,15 @@ class Header extends Component {
 
         return /*html*/`
             <header>
-               
-                <h1>${title}</h1>
-                <nav>
-                    <a href="./">Home</a>
-                    <a href="./about-us.html">About Us</a>
-                </nav>
-                <button class="log-out hidden">Log Out</button>
-            </header>
+            <nav >
+                <a id="item1" href="./">Home</a>
+                <a id="item2" href="./about-us.html">About Us</a>
+                <button id="item3" class="log-out hidden">Log Out</button>
+         </nav>
+            <div class="logo">
+                <img class="nav-logo" src="./assets/2.png">
+              </div>
+                </header>
         `;
     }
 }
