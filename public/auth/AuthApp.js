@@ -6,9 +6,10 @@ import { signUp as userSignUp, signIn as userSignIn } from '../services/nagme-ap
 
 function success(user) {
     localStorage.setItem('USER', JSON.stringify(user));
-    const searchParams = new URLSearchParams(location.search);
+    //const searchParams = new URLSearchParams(location.search);
     //CHANGEME
     //location = searchParams.get('redirect') || '/';
+    location = '/list.html';
 }
 
 class AuthApp extends Component {
