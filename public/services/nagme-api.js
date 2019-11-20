@@ -1,7 +1,8 @@
 const URL = '/api';
 
 //const token = localStorage.getItem('TOKEN');
-const token = JSON.parse(localStorage.getItem('USER')).token;
+const user = JSON.parse(localStorage.getItem('USER')).token;
+const token = user && user.token;
 // redirect if not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
 
