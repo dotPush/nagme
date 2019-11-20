@@ -85,6 +85,11 @@ class AuthApp extends Component {
                             <button id="signup-button">Need to create an Account?</button>
                         </p>
                     </section>
+                    <section id="api-container">
+                        <p class="switch">
+                            <button id="api-auth">Need to create an Account?</button>
+                        </p>
+                    </section>
                     </div>
                 </main>
             </div>

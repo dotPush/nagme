@@ -27,11 +27,11 @@ const authRoutes = createAuthRoutes({
     insertUser(user, hash) {
         console.log(user);
         return client.query(`
-            INSERT into users (email, password_hash, display_name)
-            VALUES ($1, $2, $3)
-            RETURNING id, email, display_name as "displayName";
+            INSERT into users (push_api_key, email, password_hash, display_name)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, push_api_key as "pushApiKey", email, display_name as "displayName";
         `,
-        [user.email, hash, user.displayName]
+        [user.pushApiKey, user.email, hash, user.displayName]
         ).then(result => result.rows[0]);
     }
 });
@@ -186,6 +186,7 @@ app.delete('/api/nags/:id', async(req, res) => {
     }
 });
 
+
 // app.delete('/api/lists/:id', async (req, res) => {
 //     // get the id that was passed in the route:
 //     const id = req.params.id;
@@ -214,7 +215,6 @@ new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
 app.listen('3128', () => {
     console.log('server running on 3128');
 });
-//**************************************************************/
 
 // Start the server
 app.listen(PORT, () => {
