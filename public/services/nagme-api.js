@@ -1,14 +1,14 @@
 const URL = '/api';
 
 //const token = localStorage.getItem('TOKEN');
-const token = JSON.parse(localStorage.getItem('USER')).token;
+const user = JSON.parse(localStorage.getItem('USER'));
+const token = user && user.token;
 // redirect if not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
 
     const searchParams = new URLSearchParams();
     searchParams.set('redirect', location.pathname);
-    //CHANGEME
-    //location = `/?${searchParams.toString()}`;
+    location = `/?${searchParams.toString()}`;
 }
 
 const fetchWithError = async(url, options) => {
