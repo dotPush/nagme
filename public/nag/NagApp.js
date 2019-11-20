@@ -3,7 +3,8 @@ import Header from '../common/Header.js';
 import Loading from '../common/Loading.js';
 import AddNag from './AddNag.js';
 import NagList from './NagList.js';
-import { getNags, addNag, updateNag, removeNag } from '../services/nagme-api.js';
+//import { getNags, updateNag, addNag, removeNag } from '../services/nagme-api.js';
+import { getNags, addNag, removeNag } from '../services/nagme-api.js';
 
 class NagApp extends Component {
 
@@ -18,21 +19,21 @@ class NagApp extends Component {
         dom.appendChild(loading.renderDOM());
 
         const addNagSection = new AddNag({
-            onAdd: async todo => {
+            onAdd: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
                 error.textContent = '';
 
                 try {
                     // part 1: do work on the server
-                    const saved = await addNag(todo);
+                    const saved = await addNag(nag);
                     
                     // part 2: integrate back into our list
                     const { nags } = this.state;
                     nags.push(saved);
 
                     // part 3: tell component to update
-                    todoList.update({ nags });
+                    nagList.update({ nags });
                 }
                 catch (err) {
                     // display error
@@ -47,53 +48,53 @@ class NagApp extends Component {
         });
         main.appendChild(addNagSection.renderDOM());
 
-        const todoList = new NagList({ 
+        const nagList = new NagList({ 
             nags: [],
-            onUpdate: async todo => {
-                loading.update({ loading: true });
-                // clear prior error
-                error.textContent = '';
+            // onUpdate: async nag => {
+            //     loading.update({ loading: true });
+            //     // clear prior error
+            //     error.textContent = '';
 
-                try {
-                    // part 1: do work on the server
-                    const updated = await updateNag(todo);
+            //     try {
+            //         // part 1: do work on the server
+            //         const updated = await updateNag(nag);
                     
-                    // part 2: integrate back into our list
-                    const { nags } = this.state;
-                    // find the index of this type:
-                    const index = nags.indexOf(todo);
-                    // replace with updated object from server:
-                    nags.splice(index, 1, updated);
+            //         // part 2: integrate back into our list
+            //         const { nags } = this.state;
+            //         // find the index of this type:
+            //         const index = nags.indexOf(nag);
+            //         // replace with updated object from server:
+            //         nags.splice(index, 1, updated);
 
-                    // part 3: tell component to update
-                    todoList.update({ nags });
-                }
-                catch (err) {
-                    // display error
-                    console.log(err);
-                }
-                finally {
-                    loading.update({ loading: false });
-                }
-            },
-            onRemove: async todo => {
+            //         // part 3: tell component to update
+            //         nagList.update({ nags });
+            //     }
+            //     catch (err) {
+            //         // display error
+            //         console.log(err);
+            //     }
+            //     finally {
+            //         loading.update({ loading: false });
+            //     }
+            // },
+            onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
                 error.textContent = '';
 
                 try {
                     // part 1: do work on the server
-                    await removeNag(todo.id);
+                    await removeNag(nag.id);
                     
                     // part 2: integrate back into our list
                     const { nags } = this.state;        
                     // find the index of this type:
-                    const index = nags.indexOf(todo);
+                    const index = nags.indexOf(nag);
                     // remove from the list
                     nags.splice(index, 1);
     
                     // part 3: tell component to update
-                    todoList.update({ nags });
+                    nagList.update({ nags });
                 }
                 catch (err) {
                     // display error
@@ -104,13 +105,13 @@ class NagApp extends Component {
                 }
             }
         });
-        main.appendChild(todoList.renderDOM());
+        main.appendChild(nagList.renderDOM());
 
-        // initial todo load:
+        // initial nag load:
         try {
             const nags = await getNags();
             this.state.nags = nags;
-            todoList.update({ nags });
+            nagList.update({ nags });
         }
         catch (err) {
             // display error...
@@ -129,8 +130,8 @@ class NagApp extends Component {
                 <!-- show errors: -->
                 <p class="error"></p>
                 <main>
-                    <!-- add todo goes here -->
-                    <!-- todo list goes here -->
+                    <!-- add nag goes here -->
+                    <!-- nag list goes here -->
                 </main>
             </div>
         `;
