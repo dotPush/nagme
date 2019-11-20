@@ -1,7 +1,8 @@
 const URL = '/api';
 
 //const token = localStorage.getItem('TOKEN');
-const token = JSON.parse(localStorage.getItem('USER')).token;
+const user = JSON.parse(localStorage.getItem('USER'));
+const token = user && JSON.parse(localStorage.getItem('USER')).token;
 // redirect if not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
 
@@ -53,6 +54,12 @@ export const signIn = credentials => {
 
 export const getNags = () => {
     const url = `${URL}/nags`;
+    return fetchWithError(url);
+};
+
+
+export const getNagById = (id) => {
+    const url = `${URL}/nags/${id}`;
     return fetchWithError(url);
 };
 
