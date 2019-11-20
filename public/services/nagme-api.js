@@ -57,6 +57,12 @@ export const getNags = () => {
     return fetchWithError(url);
 };
 
+
+export const getNagById = (id) => {
+    const url = `${URL}/nags/${id}`;
+    return fetchWithError(url);
+};
+
 // export const getNagLists = () => {
 //     const url = `${URL}/lists`;
 //     return fetchWithError(url);
