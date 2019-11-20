@@ -2,10 +2,12 @@
 require('dotenv').config();
 
 // Application Dependencies
+const Cron = require('cron').CronJob;
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
+const pushMessage = require('./cron/send-nags');
 // Initiate database connection
 // client.connect();
 
@@ -40,6 +42,7 @@ app.use(morgan('dev')); // http logging
 app.use(cors()); // enable CORS request
 app.use(express.static('public')); // server files from /public folder
 app.use(express.json()); // enable reading incoming json data
+
 
 // setup authentication routes
 app.use('/api/auth', authRoutes);
@@ -181,6 +184,36 @@ app.delete('/api/nags/:id', async(req, res) => {
             error: err.message || err
         });
     }
+});
+
+
+// app.delete('/api/lists/:id', async (req, res) => {
+//     // get the id that was passed in the route:
+//     const id = req.params.id;
+//
+//     try {
+//         const result = await client.query(`
+//             DELETE FROM lists
+//             WHERE id = $1
+//             RETURNING *;
+//         `, [id]);
+        
+//         res.json(result.rows[0]);
+//     }
+//     catch (err) {
+//         console.log(err);
+//         res.status(500).json({
+//             error: err.message || err
+//         });
+//     }
+// });
+
+// Cron
+new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
+
+// listen for cron
+app.listen('3128', () => {
+    console.log('server running on 3128');
 });
 
 // Start the server
