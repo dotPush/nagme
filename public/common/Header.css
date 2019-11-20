@@ -1,5 +1,5 @@
 .nav-logo {
-    width: 30%;
+    width: 15%;
     height: auto;
 
 }
@@ -10,6 +10,9 @@
   text-align:center;
 
 
+}
+body {
+    background-color: #43cfec;
 }
 
 header {
