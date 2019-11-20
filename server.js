@@ -183,27 +183,6 @@ app.delete('/api/nags/:id', async(req, res) => {
     }
 });
 
-// app.delete('/api/lists/:id', async (req, res) => {
-//     // get the id that was passed in the route:
-//     const id = req.params.id;
-//
-//     try {
-//         const result = await client.query(`
-//             DELETE FROM lists
-//             WHERE id = $1
-//             RETURNING *;
-//         `, [id]);
-        
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
-
 // Start the server
 app.listen(PORT, () => {
     console.log('server running on PORT', PORT);
