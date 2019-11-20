@@ -1,13 +1,14 @@
-
-
 const URL = '/api';
 
-const token = localStorage.getItem('TOKEN');
+//const token = localStorage.getItem('TOKEN');
+const token = JSON.parse(localStorage.getItem('USER')).token;
 // redirect if not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
+
     const searchParams = new URLSearchParams();
     searchParams.set('redirect', location.pathname);
-    location = `/?${searchParams.toString()}`;
+    //CHANGEME
+    //location = `/?${searchParams.toString()}`;
 }
 
 const fetchWithError = async(url, options) => {
@@ -61,6 +62,7 @@ export const getNags = () => {
 // };
 
 export const addNag = nag => {
+    console.log('addNag', nag);
     const url = `${URL}/nags`;
     return fetchWithError(url, {
         method: 'POST',
@@ -71,16 +73,16 @@ export const addNag = nag => {
     });
 };
 
-export const addCategory = list => {
-    const url = `${URL}/lists`;
-    return fetchWithError(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(list)
-    });
-};
+// export const addCategory = list => {
+//     const url = `${URL}/lists`;
+//     return fetchWithError(url, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(list)
+//     });
+// };
 
 // export const updateNag = todo => {
 //     const url = `${URL}/todos/${todo.id}`;

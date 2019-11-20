@@ -49,14 +49,13 @@ app.use('/api', ensureAuth);
 
 // API Routes
 
-// *** TODOS ***
+// *** NAGS ***
 app.get('/api/nags', async(req, res) => {
 
     try {
         const result = await client.query(`
             SELECT * FROM nags
-            JOIN users
-            WHERE user_id = $1;​
+            WHERE user_id = $1;
             `,
         [req.userId]);
         res.json(result.rows);
@@ -71,7 +70,7 @@ app.get('/api/nags', async(req, res) => {
 });
 
 // app.get('/api/lists', async (req, res) => {
-// ​
+//
 //     try {
 //         const result = await client.query(`
 //             SELECT * FROM lists
@@ -79,7 +78,7 @@ app.get('/api/nags', async(req, res) => {
 //             ORDER BY name ASC;
 //         `,
 //         [req.userId]);
-// ​
+//
 //         res.json(result.rows);
 //     }
 //     catch (err) {
@@ -88,11 +87,12 @@ app.get('/api/nags', async(req, res) => {
 //             error: err.message || err
 //         });
 //     }
-// ​
+//
 // });
 
 app.post('/api/nags', async(req, res) => {
-    const { nag } = req.body;
+    const nag = req.body;
+    console.log(req.body);
 
     try {
         const result = await client.query(`
@@ -107,7 +107,7 @@ app.post('/api/nags', async(req, res) => {
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;
     `,
-        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, nag.userId]);
+        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId]);
         res.json(result.rows[0]);
     }
     catch (err) {
@@ -142,7 +142,7 @@ app.post('/api/nags', async(req, res) => {
 // app.put('/api/todos/:id', async (req, res) => {
 //     const id = req.params.id;
 //     const { task, complete } = req.body;
-// ​
+//
 //     try {
 //         const result = await client.query(`
 //         UPDATE todos
@@ -169,7 +169,7 @@ app.delete('/api/nags/:id', async(req, res) => {
     try {
         const result = await client.query(`
             DELETE FROM nags
-            WHERE  id = $1
+            WHERE id=$1
             RETURNING *;
         `, [id]);
         
@@ -186,11 +186,11 @@ app.delete('/api/nags/:id', async(req, res) => {
 // app.delete('/api/lists/:id', async (req, res) => {
 //     // get the id that was passed in the route:
 //     const id = req.params.id;
-// ​
+//
 //     try {
 //         const result = await client.query(`
 //             DELETE FROM lists
-//             WHERE  id = $1
+//             WHERE id = $1
 //             RETURNING *;
 //         `, [id]);
         
