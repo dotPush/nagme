@@ -7,8 +7,8 @@ import { signUp as userSignUp, signIn as userSignIn } from '../services/nagme-ap
 function success(user) {
     localStorage.setItem('USER', JSON.stringify(user));
     const searchParams = new URLSearchParams(location.search);
+    //CHANGEME
     //location = searchParams.get('redirect') || '/';
-    location = '/list.html';
 }
 
 class AuthApp extends Component {
@@ -83,6 +83,11 @@ class AuthApp extends Component {
                     <section id="signin-container">
                         <p class="switch">
                             <button id="signup-button">Need to create an Account?</button>
+                        </p>
+                    </section>
+                    <section id="api-container">
+                        <p class="switch">
+                            <button id="api-auth">Need to create an Account?</button>
                         </p>
                     </section>
                     </div>
