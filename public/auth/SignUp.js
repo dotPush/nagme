@@ -14,7 +14,7 @@ class SignUp extends Component {
                 displayName: formData.get('name'),
                 email: formData.get('email'),
                 password: formData.get('password'),
-                apiAuth: formData.get('api-auth')
+                pushApiKey: formData.get('push-api-key')
             };
 
             onSignUp(user);
@@ -40,7 +40,7 @@ class SignUp extends Component {
                 </p>
                 <p>
                     <label for="api-auth">Pushover API User Key</label>
-                    <input id="apiAuth" type="text" name="apiAuth" required placeholder="API User key supplied by pushover">
+                    <input id="push-api-key" type="text" name="push-api-key" required placeholder="API User key supplied by pushover">
                 </p>
                 <p>
                     <button>Sign Up</button>
