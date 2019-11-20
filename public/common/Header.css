@@ -1,15 +1,14 @@
 .nav-logo {
-    width: 30%;
+    width: 15%;
     height: auto;
 
 }
 
 .logo {
-
-  
   text-align:center;
-
-
+}
+body {
+    background-color: #43cfec;
 }
 
 header {
@@ -25,9 +24,14 @@ a {
 
 nav {
     display: flex;
-    padding: 5px;
+    padding: 5px 5px 5px 5px;
     justify-content: flex-end;
-
-
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
 }
 
+
+#item1 , #item2, #item3 {
+    padding-right: 10px;
+    padding-left: 7px;
+}

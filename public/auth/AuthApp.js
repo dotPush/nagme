@@ -72,6 +72,7 @@ class AuthApp extends Component {
             <div>
                 <!-- header goes here -->
                 <main>
+                <div class="section">
                     <p class="errors"></p>
                     <section class="no-display" id="signup-container">
                         <p class="switch">
@@ -83,6 +84,7 @@ class AuthApp extends Component {
                             <button id="signup-button">Need to create an Account?</button>
                         </p>
                     </section>
+                    </div>
                 </main>
             </div>
         `;

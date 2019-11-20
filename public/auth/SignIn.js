@@ -22,6 +22,8 @@ class SignIn extends Component {
     renderHTML() {
         return /*html*/`
             <form class="auth-form standard">
+            
+        
                 <p>
                     <label for="signin-email">Email</label>
                     <input id="signin-email" type="email" name="email" required placeholder="you@somewhere.com">
