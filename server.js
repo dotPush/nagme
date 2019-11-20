@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
+const pushMessage = require('./cron/send-nags');
 // Initiate database connection
 // client.connect();
 
@@ -207,56 +208,15 @@ app.delete('/api/nags/:id', async(req, res) => {
 // });
 
 // Cron
-
-///********************************************************************* */
-// move to .env???
-//import fetchWithError from './public/services/nagme-api.js';
-const fetchWithError = async(url, options) => {
-    // if (token) {
-    //     options = options || {};
-    //     options.headers = options.headers || {};
-    //     options.headers.Authorization = token;
-    // }
-
-    const response = await fetch(url, options);
-    const data = await response.json();
-
-    if (response.ok) {
-        return data;
-    }
-    else {
-        throw data.error;
-    }
-};
-const AppKeyForPush = 'abgdzamuf2zhqkw1n7ga6gh47ed6cc';
-const pushMessage = message => {
-    const url = `https://api.pushover.net/1/messages.json`;
-    return fetchWithError(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            token: 'abgdzamuf2zhqkw1n7ga6gh47ed6cc',
-            user: 'unh2zo3h4yuxb3aws6e233q2bnygsd',
-            message: 'ITS ALIVE!!!'
-        })        
-    });
-};
-
-new Cron('*/10 * * * * *', () => {
-    console.log('running a cron task');
-    pushMessage();
-}, null, true, 'America/Los_Angeles');
-
+new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {
     console.log('server running on 3128');
 });
-//************************************************************* */
+//**************************************************************/
 
-//Start the server
+// Start the server
 app.listen(PORT, () => {
     console.log('server running on PORT', PORT);
 });
