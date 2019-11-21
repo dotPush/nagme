@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const client = require('./lib/client');
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
+const getIdString = require('./public/util/getIdString');
 
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
@@ -94,12 +95,13 @@ app.post('/api/nags', async(req, res) => {
             start_time,
             interval,
             period,
-            user_id
+            user_id,
+            id_string
         )
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `,
-        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId]);
+        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
         res.json(result.rows[0]);
     }
     catch (err) {
