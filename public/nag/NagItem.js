@@ -15,10 +15,7 @@ class NagItem extends Component {
         // });
         const nagDetailsButton = dom.querySelector('.details-button');
         nagDetailsButton.addEventListener('click', () => {
-            // event.preventDefault();
-            if (confirm('Would you like to see the nag details?')) {
-                window.location = `details.html?id=${nag.id}`;
-            }
+            window.location = `details.html?id=${nag.id}`;
         });
         const removeSpan = dom.querySelector('.delete-button');
         //const removeNag = document.getElementById('${nag.id}');
