@@ -12,7 +12,7 @@ const fetch = require('node-fetch');
 const moment = require('moment');
 
 const sendNags = handleNag.sendNags;
-//const getNewNags = require('./cron/send-nags');
+// const getNewNags = require('./cron/send-nags');
 // Initiate database connection
 // client.connect();
 
@@ -32,11 +32,11 @@ const authRoutes = createAuthRoutes({
     insertUser(user, hash) {
         console.log(user);
         return client.query(`
-            INSERT into users (email, password_hash, display_name)
-            VALUES ($1, $2, $3)
-            RETURNING id, email, display_name as "displayName";
+            INSERT into users (push_api_key, email, password_hash, display_name)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, push_api_key as "pushApiKey", email, display_name as "displayName";
         `,
-        [user.email, hash, user.displayName]
+        [user.pushApiKey, user.email, hash, user.displayName]
         ).then(result => result.rows[0]);
     }
 });
@@ -147,28 +147,25 @@ app.post('/api/nags', async(req, res) => {
 //     }
 // });
 
-// app.put('/api/todos/:id', async (req, res) => {
-//     const id = req.params.id;
-//     const { task, complete } = req.body;
-//
-//     try {
-//         const result = await client.query(`
-//         UPDATE todos
-//         SET    task = $2,
-//                complete = $3
-//         WHERE  id = $1
-//         RETURNING *;
-//         `, [id, task, complete]);
+app.get('/api/nags/:id', async(req, res) => {
+    const id = req.params.id;
+    
+    try {
+        const result = await client.query(`
+        SELECT * FROM nags
+        WHERE id=$1;
+        `, [id]);
      
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
+        res.json(result.rows);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: err.message || err
+        });
+    }
+});
+
 
 app.delete('/api/nags/:id', async(req, res) => {
     // get the id that was passed in the route:
@@ -190,6 +187,7 @@ app.delete('/api/nags/:id', async(req, res) => {
         });
     }
 });
+
 
 // app.delete('/api/lists/:id', async (req, res) => {
 //     // get the id that was passed in the route:
@@ -213,14 +211,14 @@ app.delete('/api/nags/:id', async(req, res) => {
 // });
 
 // Cron
+
 //new Cron('*/10 * * * * *', sendNags, null, true, 'America/Los_Angeles');
 sendNags();
-//console.log(getNewNags());
+
 // listen for cron
 app.listen('3128', () => {
     console.log('server running on 3128');
 });
-//**************************************************************/
 
 // Start the server
 app.listen(PORT, () => {

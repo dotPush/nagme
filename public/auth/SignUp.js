@@ -13,7 +13,8 @@ class SignUp extends Component {
             const user = {
                 displayName: formData.get('name'),
                 email: formData.get('email'),
-                password: formData.get('password')
+                password: formData.get('password'),
+                pushApiKey: formData.get('push-api-key')
             };
 
             onSignUp(user);
@@ -36,6 +37,10 @@ class SignUp extends Component {
                 <p>
                     <label for="password">Password</label>
                     <input id="password" type="password" name="password" required>
+                </p>
+                <p>
+                    <label for="api-auth">Pushover API User Key</label>
+                    <input id="push-api-key" type="text" name="push-api-key" required placeholder="API User key supplied by pushover">
                 </p>
                 <p>
                     <button>Sign Up</button>
