@@ -1,5 +1,5 @@
 // IMPORT MODULES under test here:
-import getIdString from '../node-utils/getIdString.js';
+const { getIdString } = require('../node-utils/getIdString.js');
 
 const test = QUnit.test;
 
