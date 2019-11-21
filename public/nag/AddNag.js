@@ -20,14 +20,11 @@ class AddNag extends Component {
 
             try {
                 await onAdd(nag);
-                // could redirect to detail page here
-                // this only runs if no error:
                 form.reset();
                 document.activeElement.blur();
             }
             catch (err) {
-                // nothing to do as App will show error,
-                // but will keep form from clearing...
+                // App will show error, this catch keeps form from clearing
             }
         });
     }
@@ -35,27 +32,42 @@ class AddNag extends Component {
     renderHTML() {
         return /*html*/`
         <form class="add-nag-form">
-
         <p>
             <label for="nag-name">Nag Name</label>
-            <input id="nag-name" name="nag-name" required placeholder="Add Nag Name">
+            <input
+                type="text"
+                id="nag-name"
+                name="nag-name"
+                placeholder="Add Nag Name"
+                required>
         </p>
-
         <p>
             <label for="notes">Notes</label>
-            <textarea id="notes" name="notes" required placeholder="Add Notes"></textarea>
+            <textarea
+                id="notes"
+                name="notes"
+                placeholder="Add Notes">
+            </textarea>
         </p>
-
         <p>
             <label for="startTime">Start Time</label>
-            <input type="time" id="startTime" name="startTime" required value="12:00">
+            <input
+                type="time"
+                id="startTime"
+                name="startTime"
+                value="12:00"
+                required>
         </p>
-
         <p>
             <label for="interval">Interval (in minutes)</label>
-            <input type="number" id="text" name="interval" min="1" max="60" required>
+            <input
+                type="number"
+                id="interval"
+                name="interval"
+                min="1"
+                max="60"
+                required>
         </p>
-
         <input type="submit" value="Add Nag">
     </form>
         `;
