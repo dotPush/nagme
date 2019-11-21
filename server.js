@@ -6,8 +6,10 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
+const Cron = require('cron').CronJob;
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
+const updateRecurNags = handleNag.updateRecurNags;
 const { getIdString } = require('./node-utils/getIdString');
 
 // Auth
@@ -169,6 +171,7 @@ app.get('/api/delete/:id', async(req, res) => {
             WHERE id = $1
             RETURNING *;
         `, [id]);
+        console.log("In Delete");
         
         res.json(result.rows[0]);
     }
@@ -223,9 +226,10 @@ app.put('/api/nags/:id', async(req, res) => {
         // }
 // });
 
-// Cron
-//new Cron('*/10 * * * * *', sendNags, null, true, 'America/Los_Angeles');
-sendNags();
+// Cron to find and send nags
+new Cron('* */1 * * * *', sendNags, null, true, 'America/Los_Angeles');
+// Cron to reset recurring nags one second after midnight
+new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {
