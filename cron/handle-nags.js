@@ -16,8 +16,8 @@ const getAllNags = async() => {
             SELECT
             task,
             notes,
-            start_time AS "startTime"
-            end_time AS "endTime"
+            start_time AS "startTime",
+            end_time AS "endTime",
             interval,
             minutes_after_hour AS "minutesAfterHour",
             snoozed,
