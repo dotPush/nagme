@@ -209,7 +209,7 @@ app.delete('/api/nags/:id', async(req, res) => {
 // });
 
 // Cron
-new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
+// new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {

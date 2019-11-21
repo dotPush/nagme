@@ -28,4 +28,4 @@ const pushMessage = async(message) => {
         })        
     });
 };
-module.exports=pushMessage;
+module.exports = pushMessage;

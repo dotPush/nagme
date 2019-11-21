@@ -76,12 +76,18 @@ class AuthApp extends Component {
                 <main>
                 <div class="section">
                     <p class="errors"></p>
-                    <section class="no-display" id="signup-container">
+                    <section id="signup-container"
+                        class="no-display">
                         <p class="switch">
                             <button id="signin-button">Already a User?</button>
                         </p>
                     </section>
                     <section id="signin-container">
+                        <p class="switch">
+                            <button id="signup-button">Need to create an Account?</button>
+                        </p>
+                    </section>
+                    <section id="greeting-container">
                         <p class="switch">
                             <button id="signup-button">Need to create an Account?</button>
                         </p>
