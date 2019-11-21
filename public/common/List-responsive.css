@@ -1,0 +1,46 @@
+/* Tablet */
+.wrapper {
+    max-width: 1024px;
+    margin: 0 auto; 
+    display: grid;
+    grid-template-areas: 
+    "header"
+    "sidebar"
+    "content"
+}
+
+
+@media(min-width: 600px) {
+
+    .wrapper {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        " header header "
+        " sidebar content "
+    }  
+}
+
+    
+    /* Desktop */
+@media(min-width: 900px) { 
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+    "header header"
+    "content content "
+    }
+}
+    
+.header {
+    grid-area: header;
+  }
+.main {
+    grid-area: main;
+}
+  .sidebar {
+    grid-area: sidebar;
+}
