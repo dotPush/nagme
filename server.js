@@ -2,19 +2,13 @@
 require('dotenv').config();
 
 // Application Dependencies
-const Cron = require('cron').CronJob;
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
 const handleNag = require('./cron/handle-nags');
-const fetch = require('node-fetch');
-const moment = require('moment');
-
 const sendNags = handleNag.sendNags;
-// const getNewNags = require('./cron/send-nags');
-// Initiate database connection
-// client.connect();
+const getIdString = require('./node-utils/getIdString');
 
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
@@ -48,7 +42,6 @@ app.use(cors()); // enable CORS request
 app.use(express.static('public')); // server files from /public folder
 app.use(express.json()); // enable reading incoming json data
 
-
 // setup authentication routes
 app.use('/api/auth', authRoutes);
 
@@ -56,10 +49,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api', ensureAuth);
 
 // API Routes
+const logError = (res, err) => {
+    console.log(err);
+    res.status(500).json({ error: err.message || err });
+};
 
 // *** NAGS ***
 app.get('/api/nags', async(req, res) => {
-
     try {
         const result = await client.query(`
             SELECT * FROM nags
@@ -69,16 +65,11 @@ app.get('/api/nags', async(req, res) => {
         res.json(result.rows);
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err.message || err
-        });
+        logError(res, err);
     }
-
 });
 
 // app.get('/api/lists', async (req, res) => {
-//
 //     try {
 //         const result = await client.query(`
 //             SELECT * FROM lists
@@ -89,19 +80,13 @@ app.get('/api/nags', async(req, res) => {
 //
 //         res.json(result.rows);
 //     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-//
+        // catch (err) {
+        //     logError(res, err);
+        // }
 // });
 
 app.post('/api/nags', async(req, res) => {
     const nag = req.body;
-    console.log(req.body);
-
     try {
         const result = await client.query(`
         INSERT INTO nags (
@@ -110,19 +95,17 @@ app.post('/api/nags', async(req, res) => {
             start_time,
             interval,
             period,
-            user_id
+            user_id,
+            id_string
         )
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `,
-        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId]);
+        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
         res.json(result.rows[0]);
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err.message || err
-        });
+        logError(res, err);
     }
 });
 
@@ -149,50 +132,53 @@ app.post('/api/nags', async(req, res) => {
 
 app.get('/api/nags/:id', async(req, res) => {
     const id = req.params.id;
-    
     try {
         const result = await client.query(`
         SELECT * FROM nags
-        WHERE id=$1;
+        WHERE id = $1;
         `, [id]);
      
         res.json(result.rows);
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err.message || err
-        });
+        logError(res, err);
     }
 });
 
-
 app.delete('/api/nags/:id', async(req, res) => {
-    // get the id that was passed in the route:
     const id = req.params.id;
-
     try {
         const result = await client.query(`
             DELETE FROM nags
-            WHERE id=$1
+            WHERE id = $1
             RETURNING *;
         `, [id]);
         
         res.json(result.rows[0]);
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err.message || err
-        });
+        logError(res, err);
     }
 });
 
+app.get('/api/delete/:id', async(req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await client.query(`
+            DELETE FROM nags
+            WHERE id = $1
+            RETURNING *;
+        `, [id]);
+        
+        res.json(result.rows[0]);
+    }
+    catch (err) {
+        logError(res, err);
+    }
+});
 
 // app.delete('/api/lists/:id', async (req, res) => {
-//     // get the id that was passed in the route:
 //     const id = req.params.id;
-//
 //     try {
 //         const result = await client.query(`
 //             DELETE FROM lists
@@ -202,22 +188,18 @@ app.delete('/api/nags/:id', async(req, res) => {
         
 //         res.json(result.rows[0]);
 //     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
+        // catch (err) {
+        //     logError(res, err);
+        // }
 // });
 
 // Cron
-
 //new Cron('*/10 * * * * *', sendNags, null, true, 'America/Los_Angeles');
 sendNags();
 
 // listen for cron
 app.listen('3128', () => {
-    console.log('server running on 3128');
+    console.log('cron listening on 3128');
 });
 
 // Start the server
