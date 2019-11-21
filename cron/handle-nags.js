@@ -31,9 +31,9 @@ const getAllNags = async() => {
             sun,
             recurs,
             complete,
-            id_string AS "idString"
+            id_string AS "idString",
             users.id AS "deleteId",
-            push_api_key AS "pushApiKey",
+            push_api_key AS "pushApiKey"
             FROM users JOIN nags
             ON users.id = nags.user_id;
         `,);
