@@ -1,4 +1,4 @@
-import NagDetail from './NagDetail.js';
+import NagDetailApp from './NagDetailApp.js';
 
-const app = new NagDetail();
-document.body.prepend(app.renderDOM());
+const app = new NagDetailApp();
+document.body.appendChild(app.renderDOM());
