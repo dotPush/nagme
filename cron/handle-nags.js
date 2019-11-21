@@ -33,10 +33,7 @@ const getAllNags = async()=>{
     }
 }
 
-//Z: unh2zo3h4yuxb3aws6e233q2bnygsd
-//N: u69nib51wnv6m81d7nar3voyeaiuj1
 const sendNags = async() => {
-    //console.log(req.body);
     const allNags = await getAllNags();
     const filteredNags = allNags.forEach(async nag => {
         const now = moment().format("HH:mm");
