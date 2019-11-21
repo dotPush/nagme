@@ -5,14 +5,20 @@ const user = JSON.parse(localStorage.getItem('USER'));
 
 const token = user && user.token;
 
-// redirect if not on home page
+// redirect to home page if not logged in and not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
 
-    const searchParams = new URLSearchParams();
-    searchParams.set('redirect', location.pathname);
-    location = `/?${searchParams.toString()}`;
+    //const searchParams = new URLSearchParams();
+    // searchParams.set('redirect', location.pathname);
+    // location = `/?${searchParams.toString()}`;
+    location = `/`;
 }
 
+// redirect to list if logged in
+if (token && (location.pathname === '/' || location.pathname === '/index.html')) {
+
+    location = `/list.html`;
+}
 const fetchWithError = async(url, options) => {
     if (token) {
         options = options || {};
@@ -92,16 +98,16 @@ export const addNag = nag => {
 //     });
 // };
 
-// export const updateNag = todo => {
-//     const url = `${URL}/todos/${todo.id}`;
-//     return fetchWithError(url, {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(todo)
-//     });
-// };
+export const updateNag = nag => {
+    const url = `${URL}/nags/${nag.id}`;
+    return fetchWithError(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nag)
+    });
+};
 
 // export const updateCategory = list => {
 //     const url = `${URL}/lists/${list.id}`;
