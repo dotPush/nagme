@@ -30,13 +30,8 @@
     [row2-start] "sidebar content content" [row2-end]
     /1fr 1fr 1fr;
 }
-    .sidebar {
-        height: auto;
-        width: 350px;
-    }
     .nags-ul{
         background-color: black;
-        width: 500px;
         height: 100px;
     }
 }

@@ -32,7 +32,7 @@ class AddNag extends Component {
     renderHTML() {
         return /*html*/`
  
-        <div class="sidebar">
+       
         <form class="add-nag-form">
         <p>
             <label for="nag-name">Nag Name</label>
@@ -63,17 +63,19 @@ class AddNag extends Component {
         <p>
             <label for="interval">Interval (in minutes)</label>
             <input
+           
                 type="number"
                 id="interval"
                 name="interval"
                 min="1"
                 max="60"
                 required>
+
         </p>
         <input id="submit" type="submit" value="Add Nag">
        
     </form>
-    </div>
+
  
         `;
     }
