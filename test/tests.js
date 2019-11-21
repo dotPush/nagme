@@ -1,1 +1,1 @@
-import './getIdString.test.js';
+require('./getIdString.test.js');
