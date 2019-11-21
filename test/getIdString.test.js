@@ -1,5 +1,5 @@
 // IMPORT MODULES under test here:
-import getIdString from '../node-utils/getIdString.js/index.js';
+import getIdString from '../node-utils/getIdString.js';
 
 const test = QUnit.test;
 

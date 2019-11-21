@@ -9,4 +9,10 @@ const getIdString = length => {
     return result;
 };
 
-module.exports = getIdString;
+try {
+    (module.exports = getIdString);
+}
+catch (err) {
+    console.log(err);
+}
+export default getIdString;
