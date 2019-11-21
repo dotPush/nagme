@@ -1,12 +1,8 @@
 import Component from '../Component.js';
 
 class Header extends Component {
-
- 
     onRender(dom) {
         if (localStorage.getItem('USER')) {
-
-
             const button = dom.querySelector('.log-out');
             button.classList.remove('hidden');
 
@@ -15,26 +11,21 @@ class Header extends Component {
                 location = './';
             });
         }
-
     }
- 
 
     renderHTML() {
-        // const user = this.props.user.displayName;
 
         return /*html*/`
             <header class="header">
-            <nav>
-            <p>Logged in as <span></span><p>
+            <nav >
                 <a id="item1" href="./">Home</a>
-                <a id="item3"  href="./list.html">Nags</a>
                 <a id="item2" href="./about-us.html">About Us</a>
                 <button id="item3" class="log-out hidden">Log Out</button>
-            </nav>
+         </nav>
             <div class="logo">
                 <img class="nav-logo" src="./assets/2.png">
-            </div>
-        </header>
+              </div>
+                </header>
         `;
     }
 }
