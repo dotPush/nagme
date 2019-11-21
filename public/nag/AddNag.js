@@ -46,8 +46,7 @@ class AddNag extends Component {
             <textarea
                 id="notes"
                 name="notes"
-                placeholder="Add Notes">
-            </textarea>
+                placeholder="Add Notes"></textarea>
         </p>
         <p>
             <label for="startTime">Start Time</label>
