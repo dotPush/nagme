@@ -1,5 +1,5 @@
 import Component from '../Component.js';
-import Header from '../common/Header';
+import Header from '../common/Header.js';
 import Loading from '../common/Loading.js';
 import NagDetail from './NagDetail.js';
 import { getNagById } from '../services/nagme-api.js';
@@ -24,7 +24,7 @@ class NagDetailApp extends Component {
 
         try {
             const nag = await getNagById(id);
-            const nagDetail = new NagDetail({ nag: nag });
+            const nagDetail = new NagDetail({ nag });
             main.appendChild(nagDetail.renderDOM());
 
         }
