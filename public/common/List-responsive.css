@@ -19,6 +19,12 @@
     [row2-start] "sidebar content " [row2-end]
     /1fr 1fr ;
 }
+.nav-logo{
+    min-height: 200px;
+    min-width: 300px;
+    max-height: 300px;
+    max-width: 200px;
+}
 
     
     /* Desktop */
@@ -29,7 +35,13 @@
     [row1-start] "header header "  [row1-end]
     [row2-start] "sidebar content " [row2-end]
     /1fr 1fr ;
+
 }
+.nav-logo{
+    max-height: 300px;
+    max-width: 200px;
+}
+
 
 }
     
