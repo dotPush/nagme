@@ -6,7 +6,7 @@ export const carrierEmails = [
     ['XFinity Mobile', 'number@vtext.com', 'number@mypixmessages.com'],
     ['Virgin Mobile', 'number@vmobl.com', 'number@vmpix.com'],
     ['Tracfone', 'number@mmst5.tracfone.com'],
-    ['Metro PCS', 'number@mymetropcs.com (SMS & MMS)'],
+    ['Metro PCS', 'number@mymetropcs.com'],
     ['Boost Mobile', 'number@sms.myboostmobile.com', 'number@myboostmobile.com'],
     ['Cricket', 'number@sms.cricketwireless.net', 'number@mms.cricketwireless.net'],
     ['Republic Wireless', 'number@text.republicwireless.com'],
