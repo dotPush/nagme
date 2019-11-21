@@ -36,8 +36,11 @@ class NagItem extends Component {
                     <!-- <span class="checkbox"><input type="checkbox" name="checkbox" value="done" ${nag.complete && 'checked'}></span> -->
                     <!-- <span class="task-span${nag.complete && '-strikethrough'}">${nag.task}</span> -->
                     <span class="task-span">${nag.task}</span>
-                    <span class="close"><button class='delete-button'>Delete</button></span> <br>
+                    <br>
+                    
                     <span class="close"><button class="details-button">Nag Details</button></span>
+                    <span class="close"><button class='delete-button'>Delete</button></span>
+                   
                 </p>
                 <p class="notes-span" hidden>${nag.notes}</p>
             </li>
