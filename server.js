@@ -50,8 +50,7 @@ app.use('/api', ensureAuth);
 // API Routes
 const logError = (res, err) => {
     console.log(err);
-    res.status(500).json({
-        error: err.message || err });
+    res.status(500).json({ error: err.message || err });
 };
 
 // *** NAGS ***
