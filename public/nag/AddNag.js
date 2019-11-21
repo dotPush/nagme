@@ -3,12 +3,14 @@ import Component from '../Component.js';
 class AddNag extends Component {
 
     onRender(form) {
-        const { onAdd } = this.props;
-        
+        const { onAdd, onRemove, forceNag } = this.props;
+        const myTextArea = form.querySelector('textarea');
+        forceNag && (myTextArea.value = forceNag.notes);
         form.addEventListener('submit', async event => {
             event.preventDefault();
 
             const formData = new FormData(form);
+            const buttonAction = formData.get('action'); //add or update
 
             const nag = {
                 task: formData.get('nag-name'),
@@ -19,7 +21,10 @@ class AddNag extends Component {
             };
 
             try {
+                if (buttonAction === 'update')
+                    await onRemove(nag);
                 await onAdd(nag);
+
                 form.reset();
                 document.activeElement.blur();
             }
@@ -30,6 +35,7 @@ class AddNag extends Component {
     }
 
     renderHTML() {
+        const forceNag = this.props.forceNag; 
         return /*html*/`
         <form class="add-nag-form">
         <p>
@@ -39,6 +45,7 @@ class AddNag extends Component {
                 id="nag-name"
                 name="nag-name"
                 placeholder="Add Nag Name"
+                value="${forceNag ? forceNag.task : ''}"
                 required>
         </p>
         <p>
@@ -46,8 +53,8 @@ class AddNag extends Component {
             <textarea
                 id="notes"
                 name="notes"
-                placeholder="Add Notes">
-            </textarea>
+                value="${forceNag ? forceNag.notes : ''}"
+                placeholder="Add Notes"></textarea>
         </p>
         <p>
             <label for="startTime">Start Time</label>
@@ -55,7 +62,7 @@ class AddNag extends Component {
                 type="time"
                 id="startTime"
                 name="startTime"
-                value="12:00"
+                value="${forceNag ? forceNag.start_time : '12:00:00'}"
                 required>
         </p>
         <p>
@@ -66,9 +73,11 @@ class AddNag extends Component {
                 name="interval"
                 min="1"
                 max="60"
+                value="${forceNag ? forceNag.interval : ''}"
                 required>
         </p>
-        <input type="submit" value="Add Nag">
+        <button type="submit" value="add" name='action'>Add Nag</button>
+        <button type="submit" value="update" name='action'>Update Nag</button>
     </form>
         `;
     }

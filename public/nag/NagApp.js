@@ -34,6 +34,7 @@ class NagApp extends Component {
 
                     // part 3: tell component to update
                     nagList.update({ nags });
+
                 }
                 catch (err) {
                     // display error
@@ -77,6 +78,10 @@ class NagApp extends Component {
             //         loading.update({ loading: false });
             //     }
             // },
+
+            onAnyClick: (nag) => {
+                addNagSection.update({ forceNag:nag });
+            },
             onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error

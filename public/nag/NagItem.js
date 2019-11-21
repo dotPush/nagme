@@ -25,6 +25,13 @@ class NagItem extends Component {
         removeSpan.addEventListener('click', () => {
             confirm(`Are you sure you want to remove this task?`) &&
             onRemove(nag);
+        
+        });
+
+
+        //global page event listener
+        dom.addEventListener('click', () => {
+            this.props.onAnyClick(nag);
         });
     }
 

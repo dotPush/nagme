@@ -177,35 +177,35 @@ app.get('/api/delete/:id', async(req, res) => {
     }
 });
 
-app.put('/api/nags/:id', async(req, res) => {
-    const id = req.params.id;
-    const nag = req.body;
-    try {
-        const result = await client.query(`
-        UPDATE nags (
-            id,
-            task,
-            notes,
-            start_time,
-            interval,
-            period,
-            user_id,
-            id_string
-        WHERE id = $1;
-        )
-        VALUES ($1, $2, $3, $4, $5, $6, $7 $8)
-        RETURNING *;
+// app.put('/api/nags/:id', async(req, res) => {
+//     const id = req.params.id;
+//     const nag = req.body;
+//     try {
+//         const result = await client.query(`
+//         UPDATE nags (
+//             id,
+//             task,
+//             notes,
+//             start_time,
+//             interval,
+//             period,
+//             user_id,
+//             id_string
+//         WHERE id = $1;
+//         )
+//         VALUES ($1, $2, $3, $4, $5, $6, $7 $8)
+//         RETURNING *;
 
-        `, [id, nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
-        res.json(result.rows[0]);
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err.message || err
-        });
-    }
-});
+//         `, [id, nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
+//         res.json(result.rows[0]);
+//     }
+//     catch (err) {
+//         console.log(err);
+//         res.status(500).json({
+//             error: err.message || err
+//         });
+//     }
+// });
 
 // app.delete('/api/lists/:id', async (req, res) => {
 //     const id = req.params.id;
