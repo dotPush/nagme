@@ -1,5 +1,12 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400&display=swap);
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat&display=swap);
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap);
+
+
 .nav-logo {
-    width: 15%;
+    width: 35%;
     height: auto;
 
 }
@@ -7,7 +14,7 @@
 .logo {
   text-align:center;
 }
-body {
+body {l;
     background-color: #43cfec;
 }
 
@@ -20,6 +27,12 @@ header {
 a {
     color: #ffffff;
     text-decoration: none;
+}
+
+h1 {
+    color: #ffffff;
+    font-family: Montserrat;
+    font-weight: 800;
 }
 
 nav {
@@ -36,6 +49,25 @@ nav {
     padding-left: 7px;
 }
 
+
+p {
+    color: #ffffff;
+    text-align: center;
+    font-family: Lato;
+    font-weight: 400;
+}
+
+.page-title {
+    text-align: center;
+}
+
+h3 {
+    color: #ffffff;
+    text-align: center;
+    font-family: Montserrat;
+    font-weight: 400;
+
 .hidden {
     display: none;
+
 }
