@@ -23,7 +23,7 @@ class Header extends Component {
                 <button id="item3" class="log-out hidden">Log Out</button>
          </nav>
             <div class="logo">
-                <img class="nav-logo" src="./assets/NM.png">
+                <img class="nav-logo" src="./assets/NMBigLogo.png">
               </div>
                 </header>
         `;
