@@ -7,7 +7,12 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
-const pushMessage = require('./cron/send-nags');
+const handleNag = require('./cron/handle-nags');
+const fetch = require('node-fetch');
+const moment = require('moment');
+
+const sendNags = handleNag.sendNags;
+//const getNewNags = require('./cron/send-nags');
 // Initiate database connection
 // client.connect();
 
@@ -208,8 +213,9 @@ app.delete('/api/nags/:id', async(req, res) => {
 // });
 
 // Cron
-new Cron('*/10 * * * * *', pushMessage, null, true, 'America/Los_Angeles');
-
+//new Cron('*/10 * * * * *', sendNags, null, true, 'America/Los_Angeles');
+sendNags();
+//console.log(getNewNags());
 // listen for cron
 app.listen('3128', () => {
     console.log('server running on 3128');
