@@ -1,5 +1,5 @@
 //https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-export const getIdString = length => {
+const getIdString = length => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -8,3 +8,5 @@ export const getIdString = length => {
     }
     return result;
 };
+
+module.exports = getIdString;
