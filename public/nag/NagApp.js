@@ -127,7 +127,7 @@ class NagApp extends Component {
     renderHTML() {
         return /*html*/`
         <div class="wrapper">
-            <div>
+            <div class="NagApp">
                 <!-- header goes here -->
                 <!-- show errors: -->
                 <p class="error"></p>
@@ -135,10 +135,10 @@ class NagApp extends Component {
                     <!-- add nag goes here -->
                     
                 </main>
+                </div>
                 <section class="content">
                  <!-- nag list goes here -->
                 </section>
-            </div>
         </div>
         `;
     }

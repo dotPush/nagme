@@ -15,9 +15,9 @@
 
     display:grid;
     grid-template:
-    [row1-start] "header header header"  [row1-end]
-    [row2-start] "sidebar content content" [row2-end]
-    /1fr 1fr 1fr;
+    [row1-start] "header header "  [row1-end]
+    [row2-start] "sidebar content " [row2-end]
+    /1fr 1fr ;
 }
 
     
@@ -26,14 +26,11 @@
 .wrapper {
     display:grid;
     grid-template:
-    [row1-start] "header header header"  [row1-end]
-    [row2-start] "sidebar content content" [row2-end]
-    /1fr 1fr 1fr;
+    [row1-start] "header header "  [row1-end]
+    [row2-start] "sidebar content " [row2-end]
+    /1fr 1fr ;
 }
-    .nags-ul{
-        background-color: lightcoral;
-        height: 100px;
-    }
+
 }
     
 .header {
