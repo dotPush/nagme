@@ -25,29 +25,22 @@ const client = require('../lib/client');
                     minutes_after_hour INT,
                     snoozed BOOLEAN,
                     period VARCHAR(16),
-                    mon BOOLEAN,
-                    tue BOOLEAN,
-                    wed BOOLEAN,
-                    thu BOOLEAN,
-                    fri BOOLEAN,
-                    sat BOOLEAN,
-                    sun BOOLEAN,
-                    recurs BOOLEAN,
-                    complete BOOLEAN,
+                    mon BOOLEAN DEFAULT TRUE,
+                    tue BOOLEAN DEFAULT TRUE,
+                    wed BOOLEAN DEFAULT TRUE,
+                    thu BOOLEAN DEFAULT TRUE,
+                    fri BOOLEAN DEFAULT TRUE,
+                    sat BOOLEAN DEFAULT TRUE,
+                    sun BOOLEAN DEFAULT TRUE,
+                    recurs BOOLEAN DEFAULT FALSE,
+                    complete BOOLEAN DEFAULT FALSE,
                     id_string VARCHAR(30),
                     user_id INT NOT NULL REFERENCES users(id)
                 );
             `);
-
             console.log('create tables complete');
         }
-        catch (err) {
-            // problem? let's see the error...
-            console.log(err);
-        }
-        finally {
-            // success or failure, need to close the db connection
-            client.end();
-        }
+        catch (err) { console.log(err); }
+        finally { client.end(); }
     }
 )();
