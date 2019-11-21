@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const client = require('./lib/client');
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
-const getIdString = require('./public/util/getIdString');
+const getIdString = require('./node-utils/getIdString');
 
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
