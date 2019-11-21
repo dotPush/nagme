@@ -12,7 +12,7 @@ class NagList extends Component {
     }
     renderHTML() {
         return /*html*/`
-            <ul class="nags-ul"></ul>
+            <ul class="nags-ul content"></ul>
         `;
     }
 }

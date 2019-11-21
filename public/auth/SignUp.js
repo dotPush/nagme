@@ -38,10 +38,12 @@ class SignUp extends Component {
                     <label for="password">Password</label>
                     <input id="password" type="password" name="password" required>
                 </p>
+                <br>
                 <p>
                     <label for="api-auth">Pushover API User Key</label>
                     <input id="push-api-key" type="text" name="push-api-key" required placeholder="API User key supplied by pushover">
                 </p>
+                <br>
                 <p>
                     <button>Sign Up</button>
                 </p>

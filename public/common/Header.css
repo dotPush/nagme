@@ -8,18 +8,16 @@
 .nav-logo {
     width: 35%;
     height: auto;
-
 }
 
 .logo {
   text-align:center;
 }
-body {l;
+body {
     background-color: #43cfec;
 }
 
 header {
-    
     background-color: #43cfec;
     width: auto;
 }
@@ -66,8 +64,10 @@ h3 {
     text-align: center;
     font-family: Montserrat;
     font-weight: 400;
-
+}
 .hidden {
     display: none;
-
+}
+.nags-hide {
+    display: none;
 }

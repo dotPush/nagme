@@ -31,6 +31,8 @@ class AddNag extends Component {
 
     renderHTML() {
         return /*html*/`
+ 
+        <div class="sidebar">
         <form class="add-nag-form">
         <p>
             <label for="nag-name">Nag Name</label>
@@ -68,8 +70,11 @@ class AddNag extends Component {
                 max="60"
                 required>
         </p>
-        <input type="submit" value="Add Nag">
+        <input id="submit" type="submit" value="Add Nag">
+       
     </form>
+    </div>
+ 
         `;
     }
 }
