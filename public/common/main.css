@@ -13,15 +13,11 @@ p {
 button{
     font-family: 'Lato', sans-serif;
     font-weight: 400;
+    border: 0.3px solid black;
     
 }
 
 input{
-    border: 0.3px solid black;
-}
-
-
-button{
     border: 0.3px solid black;
 }
 
