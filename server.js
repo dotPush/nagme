@@ -171,7 +171,23 @@ app.get('/api/delete/:id', async(req, res) => {
             WHERE id = $1
             RETURNING *;
         `, [id]);
-        console.log("In Delete");
+        
+        res.json(result.rows[0]);
+    }
+    catch (err) {
+        logError(res, err);
+    }
+});
+
+app.get('/api/complete/:id', async(req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await client.query(`
+            UPDATE nags
+            SET complete = TRUE
+            WHERE id = $1
+            RETURNING *;
+        `, [id]);
         
         res.json(result.rows[0]);
     }
