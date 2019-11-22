@@ -74,6 +74,7 @@ const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
 };
 
 const sendNags = async() => {
+    console.log('sendNags');
     const allNags = await getAllNags();
     allNags.forEach(async nag => {
         nag.startTime = moment.utc(nag.start_time, 'HH:mm');
@@ -104,6 +105,7 @@ const sendNags = async() => {
 };
 
 const updateRecurNags = async() => {
+    console.log('updateRecurNags');
     try {
         const result = await client.query(`
             UPDATE nags 
