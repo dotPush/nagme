@@ -15,6 +15,7 @@ function success(user) {
 class AuthApp extends Component {
 
     onRender(dom) {
+
         const header = new Header();
         dom.prepend(header.renderDOM());
 
@@ -22,6 +23,12 @@ class AuthApp extends Component {
         const signUpContainer = dom.querySelector('#signup-container');
         const signInContainer = dom.querySelector('#signin-container');
         
+        // hide signup and signin if user is logged in
+        if (localStorage.getItem('USER')) {
+            signUpContainer.classList.add('hidden');
+            signInContainer.classList.add('hidden');
+        }
+
         const signUp = new SignUp({
             onSignUp: async newUser => {
                 errors.textContent = '';
@@ -65,18 +72,19 @@ class AuthApp extends Component {
             signUpContainer.classList.remove('no-display');
             signInContainer.classList.add('no-display');
         });
-
-
     }
 
     renderHTML() {
         return /*html*/`
+        <div class="wrapper">
+\
             <div>
                 <!-- header goes here -->
-                <main>
+                <main class="content">
                 <div class="section">
                     <p class="errors"></p>
-                    <section class="no-display" id="signup-container">
+                    <section id="signup-container"
+                        class="no-display">
                         <p class="switch">
                             <button id="signin-button">Already a User?</button>
                         </p>
@@ -86,13 +94,9 @@ class AuthApp extends Component {
                             <button id="signup-button">Need to create an Account?</button>
                         </p>
                     </section>
-                    <section id="api-container">
-                        <p class="switch">
-                            <button id="api-auth">Need to create an Account?</button>
-                        </p>
-                    </section>
                     </div>
-                </main>
+                </main class="content">
+            </div>
             </div>
         `;
     }

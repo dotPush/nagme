@@ -14,3 +14,8 @@
     border-radius: 10px;
     box-shadow: 1px 1px 3px black;
 }
+.loading{
+    width: 100px;
+    height: 100px;
+}
+

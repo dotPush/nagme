@@ -68,6 +68,7 @@ class AddNag extends Component {
         const forceNag = this.props.forceNag; 
         return /*html*/`
         <form class="add-nag-form">
+        <div class = "add-nag-div">
         <p>
             <label for="nag-name">Nag Name</label>
             <input
@@ -78,14 +79,18 @@ class AddNag extends Component {
                 value="${forceNag ? forceNag.task : ''}"
                 required>
         </p>
+        <br>
         <p>
             <label for="notes">Notes</label>
             <textarea
                 id="notes"
                 name="notes"
+
                 value="${forceNag ? forceNag.notes : ''}"
+
                 placeholder="Add Notes"></textarea>
         </p>
+        <br>
         <p>
             <label for="startTime">Start Time</label>
             <input
@@ -95,9 +100,11 @@ class AddNag extends Component {
                 value="${forceNag ? forceNag.start_time : '12:00:00'}"
                 required>
         </p>
+        <br>
         <p>
             <label for="interval">Interval (in minutes)</label>
             <input
+           
                 type="number"
                 id="interval"
                 name="interval"
@@ -105,7 +112,9 @@ class AddNag extends Component {
                 max="60"
                 value="${forceNag ? forceNag.interval : ''}"
                 required>
+
         </p>
+
                 <p>
             <input
                 type="hidden"
@@ -115,7 +124,10 @@ class AddNag extends Component {
         </p>
         <button class="save-button" type="submit" name='action'>Save Nag</button>
 
+
     </form>
+
+ 
         `;
     }
 }

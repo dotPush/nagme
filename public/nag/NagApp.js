@@ -14,6 +14,7 @@ class NagApp extends Component {
         
         const main = dom.querySelector('main');
         const error = dom.querySelector('.error');
+        const content = dom.querySelector('.content');
 
         const loading = new Loading({ loading: true });
         dom.appendChild(loading.renderDOM());
@@ -139,7 +140,7 @@ class NagApp extends Component {
                 }
             }
         });
-        main.appendChild(nagList.renderDOM());
+        content.appendChild(nagList.renderDOM());
 
         // initial nag load:
         try {
@@ -159,15 +160,20 @@ class NagApp extends Component {
 
     renderHTML() {
         return /*html*/`
-            <div>
+        <div class="wrapper">
+            <div class="NagApp">
                 <!-- header goes here -->
                 <!-- show errors: -->
                 <p class="error"></p>
                 <main>
                     <!-- add nag goes here -->
-                    <!-- nag list goes here -->
+                    
                 </main>
-            </div>
+                </div>
+                <section class="content">
+                 <!-- nag list goes here -->
+                </section>
+        </div>
         `;
     }
 }

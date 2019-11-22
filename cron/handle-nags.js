@@ -102,4 +102,20 @@ const sendNags = async() => {
         }
     });
 };
+
+const updateRecurNags = async() => {
+    try {
+        const result = await client.query(`
+            UPDATE nags 
+            SET complete = false
+            WHERE recurs
+            RETURNING *;
+        `,);
+        return result.rows;
+    }
+    catch (err) {
+        console.log(err); 
+    }
+}; 
 exports.sendNags = sendNags;
+exports.updateRecurNags = updateRecurNags;
