@@ -142,7 +142,9 @@ class AddNag extends Component {
                     <input type="radio" name="recurs" value="true">Yes
                     <input type="radio" name="recurs" value="false" checked>No<br>
                     <button class="save-button" type="submit" name='action'>Save</button>
-                    <input type="reset" value="Clear" />
+                
+                    <input class="buttonClear" type="reset" value="Clear" />
+               
                     </fieldset>
                     </div>
                 </div>

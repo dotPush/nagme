@@ -25,3 +25,12 @@ input{
    
     margin-bottom: 20px;
 }
+
+button {
+    border-radius:20px
+}
+
+.buttonClear{
+    border-radius:20px;
+    padding-bottom:5px;
+}
