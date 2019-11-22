@@ -103,7 +103,6 @@ const sendNags = async() => {
             && isTimeForNag(nag)
         )
         {
-            console.log("nag being sent to: " + nag.pushApiKey);
             try {
                 const url = `https://api.pushover.net/1/messages.json`;
                 return await fetchWithError(url, {
@@ -154,16 +153,16 @@ const rainIds = async() => {
     catch (err) {
         console.log(err);
     }
-}
+};
 
 const umbrellaCheck = async() => {
     // Portland lat and long
     const lat = '45.5051';
     const long = '122.6750';
-    let rainProbability = 0
+    let rainProbability = 0;
     try {
         const checkWeather = await superagent.get(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${long}`);
-        if(checkWeather){
+        if (checkWeather){
             rainProbability = parseFloat(checkWeather.body.currently.precipProbability, 10);
         }
     }
@@ -172,33 +171,33 @@ const umbrellaCheck = async() => {
         console.log(err);
     }
     // Is the probability for rain greater than 40%?
-    if(rainProbability > .4){
+    if (rainProbability > .4){
         const umbrellaNags = await rainIds();
         umbrellaNags.forEach(async nag => {
             if (
                 nag.push_api_key &&
                 nag.push_api_key.length === 30) {
-                    try {
-                        const url = `https://api.pushover.net/1/messages.json`;
-                        return await fetchWithError(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                token: process.env.PUSHOVER_TOKEN,
-                                user: nag.push_api_key,
-                                message: 'Greater Than 40% chance of rain',
-                                url: `https://nagmeapp.herokuapp.com/api/complete/${nag.user_id}`,
-                                url_title: 'CLICK HERE MARK COMPLETE'
-                            })        
-                        });
-                    }
-                    catch (err) { console.log('error ' + err); }
+                try {
+                    const url = `https://api.pushover.net/1/messages.json`;
+                    return await fetchWithError(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            token: process.env.PUSHOVER_TOKEN,
+                            user: nag.push_api_key,
+                            message: 'Greater Than 40% chance of rain',
+                            url: `https://nagmeapp.herokuapp.com/api/complete/${nag.user_id}`,
+                            url_title: 'CLICK HERE MARK COMPLETE'
+                        })        
+                    });
                 }
+                catch (err) { console.log('error ' + err); }
+            }
         });
     }
-}
+};
 exports.umbrellaCheck = umbrellaCheck;
 exports.sendNags = sendNags;
 exports.updateRecurNags = updateRecurNags;
