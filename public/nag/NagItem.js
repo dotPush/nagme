@@ -16,7 +16,7 @@ class NagItem extends Component {
 
         const nagDetailsButton = dom.querySelector('.details-button');
         nagDetailsButton.addEventListener('click', () => {
-            window.location = `details.html?id=${nag.id}`;
+            // window.location = `details.html?id=${nag.id}`;
         });
 
         const removeSpan = dom.querySelector('.delete-button');

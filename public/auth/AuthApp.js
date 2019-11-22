@@ -77,7 +77,6 @@ class AuthApp extends Component {
     renderHTML() {
         return /*html*/`
         <div class="wrapper">
-\
             <div>
                 <!-- header goes here -->
                 <main class="content">
