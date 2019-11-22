@@ -15,7 +15,9 @@ class NagItem extends Component {
         // });
 
         const nagDetailsButton = dom.querySelector('.details-button');
-        nagDetailsButton.addEventListener('click', () => {
+        nagDetailsButton.addEventListener('click', () => { const { nag } = this.props;
+            const json = JSON.stringify(nag, true, 4);
+            console.log(json);
             // window.location = `details.html?id=${nag.id}`;
         });
 
