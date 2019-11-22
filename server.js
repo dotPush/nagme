@@ -100,15 +100,34 @@ app.post('/api/nags', async(req, res) => {
             task,
             notes,
             start_time,
+            end_time,
             interval,
+            minutes_after_hour,
+            snoozed,
             period,
+            mon,
+            tue,
+            wed,
+            thu,
+            fri,
+            sat,
+            sun,
+            recurs,
+            complete,
             user_id,
             id_string
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
         RETURNING *;
     `,
-        [nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
+        [nag.task, nag.notes, nag.startTime,
+            nag.endTime === '' ? null : nag.endTime,
+            nag.interval,
+            nag.minutesAfterHour === '' ? -1 : nag.minutesAfterHour,
+            nag.snoozed, nag.period,
+            nag.mon, nag.tue, nag.wed, nag.thu, nag.fri, nag.sat, nag.sun,
+            nag.recurs, nag.complete,
+            req.userId, getIdString(30)]);
         res.json(result.rows[0]);
     }
     catch (err) {

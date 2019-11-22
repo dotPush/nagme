@@ -31,6 +31,7 @@ class NagItem extends Component {
         updateButtons.forEach(button => {
             button.addEventListener('click', () => {
                 this.props.onAnyClick(nag);
+                console.log('edit', nag);
             });
         });
     }
