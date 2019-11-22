@@ -14,10 +14,12 @@ class NagItem extends Component {
         //     onUpdate(nag);
         // });
 
-        const nagDetailsButton = dom.querySelector('.details-button');
-        nagDetailsButton.addEventListener('click', () => {
-            window.location = `details.html?id=${nag.id}`;
-        });
+        // const nagDetailsButton = dom.querySelector('.details-button');
+        // nagDetailsButton.addEventListener('click', () => { const { nag } = this.props;
+        //     const json = JSON.stringify(nag, true, 4);
+        //     console.log(json);
+        //     window.location = `details.html?id=${nag.id}`;
+        // });
 
         const removeSpan = dom.querySelector('.delete-button');
         //const removeNag = document.getElementById('${nag.id}');

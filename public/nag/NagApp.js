@@ -141,7 +141,7 @@ class NagApp extends Component {
             }
         });
         content.appendChild(nagList.renderDOM());
-
+       
         // initial nag load:
         try {
             const nags = await getNags();
