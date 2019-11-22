@@ -8,8 +8,10 @@ class Loading extends Component {
         }
         
         return /*html*/`
+        <div class="wrapper">
             <div class="loading-container">
-                <img src="assets/loading2.gif">
+                <img class="loading" src="assets/loading.gif">
+            </div>
             </div>
         `;
     }

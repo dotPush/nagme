@@ -6,8 +6,11 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const client = require('./lib/client');
+const Cron = require('cron').CronJob;
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
+
+const updateRecurNags = handleNag.updateRecurNags;
 const { getIdString } = require('./node-utils/getIdString');
 
 // Auth
@@ -177,6 +180,53 @@ app.get('/api/delete/:id', async(req, res) => {
     }
 });
 
+app.get('/api/complete/:id', async(req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await client.query(`
+            UPDATE nags
+            SET complete = TRUE
+            WHERE id = $1
+            RETURNING *;
+        `, [id]);
+        
+        res.json(result.rows[0]);
+    }
+    catch (err) {
+        logError(res, err);
+    }
+});
+
+// app.put('/api/nags/:id', async(req, res) => {
+//     const id = req.params.id;
+//     const nag = req.body;
+//     try {
+//         const result = await client.query(`
+//         UPDATE nags (
+//             id,
+//             task,
+//             notes,
+//             start_time,
+//             interval,
+//             period,
+//             user_id,
+//             id_string
+//         WHERE id = $1;
+//         )
+//         VALUES ($1, $2, $3, $4, $5, $6, $7 $8)
+//         RETURNING *;
+
+//         `, [id, nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
+//         res.json(result.rows[0]);
+//     }
+//     catch (err) {
+//         console.log(err);
+//         res.status(500).json({
+//             error: err.message || err
+//         });
+//     }
+// });
+
 // app.delete('/api/lists/:id', async (req, res) => {
 //     const id = req.params.id;
 //     try {
@@ -193,9 +243,10 @@ app.get('/api/delete/:id', async(req, res) => {
         // }
 // });
 
-// Cron
-//new Cron('*/10 * * * * *', sendNags, null, true, 'America/Los_Angeles');
-sendNags();
+// Cron to find and send nags
+new Cron('* */1 * * * *', sendNags, null, true, 'America/Los_Angeles');
+// Cron to reset recurring nags one second after midnight
+new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {

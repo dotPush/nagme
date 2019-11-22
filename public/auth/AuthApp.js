@@ -76,9 +76,11 @@ class AuthApp extends Component {
 
     renderHTML() {
         return /*html*/`
+        <div class="wrapper">
+\
             <div>
                 <!-- header goes here -->
-                <main>
+                <main class="content">
                 <div class="section">
                     <p class="errors"></p>
                     <section id="signup-container"
@@ -93,7 +95,8 @@ class AuthApp extends Component {
                         </p>
                     </section>
                     </div>
-                </main>
+                </main class="content">
+            </div>
             </div>
         `;
     }

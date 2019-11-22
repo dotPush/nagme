@@ -14,6 +14,7 @@ class NagApp extends Component {
         
         const main = dom.querySelector('main');
         const error = dom.querySelector('.error');
+        const content = dom.querySelector('.content');
 
         const loading = new Loading({ loading: true });
         dom.appendChild(loading.renderDOM());
@@ -34,6 +35,7 @@ class NagApp extends Component {
 
                     // part 3: tell component to update
                     nagList.update({ nags });
+
                 }
                 catch (err) {
                     // display error
@@ -44,8 +46,37 @@ class NagApp extends Component {
                 finally {
                     loading.update({ loading: false });
                 }
+            },
+            onRemove: async nag => {
+                loading.update({ loading: true });
+                // clear prior error
+                error.textContent = '';
+
+                try {
+                    // part 1: do work on the server
+                    await removeNag(nag.id);
+                    
+                    // part 2: integrate back into our list
+                    const { nags } = this.state;        
+                    // find the index of this type:
+                    const index = nags.indexOf(nag);
+                    // remove from the list
+                    nags.splice(index, 1);
+    
+                    // part 3: tell component to update
+                    nagList.update({ nags });
+                }
+                catch (err) {
+                    // display error
+                    console.log(err);
+                }
+                finally {
+                    loading.update({ loading: false });
+                }
             }
         });
+
+
         main.appendChild(addNagSection.renderDOM());
 
         const nagList = new NagList({ 
@@ -77,11 +108,15 @@ class NagApp extends Component {
             //         loading.update({ loading: false });
             //     }
             // },
+
+            onAnyClick: (nag) => {
+                addNagSection.update({ forceNag:nag });
+            },
+            
             onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
                 error.textContent = '';
-
                 try {
                     // part 1: do work on the server
                     await removeNag(nag.id);
@@ -105,7 +140,7 @@ class NagApp extends Component {
                 }
             }
         });
-        main.appendChild(nagList.renderDOM());
+        content.appendChild(nagList.renderDOM());
 
         // initial nag load:
         try {
@@ -125,15 +160,20 @@ class NagApp extends Component {
 
     renderHTML() {
         return /*html*/`
-            <div>
+        <div class="wrapper">
+            <div class="NagApp">
                 <!-- header goes here -->
                 <!-- show errors: -->
                 <p class="error"></p>
                 <main>
                     <!-- add nag goes here -->
-                    <!-- nag list goes here -->
+                    
                 </main>
-            </div>
+                </div>
+                <section class="content">
+                 <!-- nag list goes here -->
+                </section>
+        </div>
         `;
     }
 }

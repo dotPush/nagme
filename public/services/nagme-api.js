@@ -98,14 +98,14 @@ export const addNag = nag => {
 //     });
 // };
 
-// export const updateNag = todo => {
-//     const url = `${URL}/todos/${todo.id}`;
+// export const updateNag = nag => {
+//     const url = `${URL}/nags/${nag.id}`;
 //     return fetchWithError(url, {
 //         method: 'PUT',
 //         headers: {
 //             'Content-Type': 'application/json',
 //         },
-//         body: JSON.stringify(todo)
+//         body: JSON.stringify(nag)
 //     });
 // };
 
