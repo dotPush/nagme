@@ -81,7 +81,7 @@ app.get('/api/nags', async(req, res) => {
             complete,
             id_string AS "idString"
             FROM nags
-            WHERE id = $1;
+            WHERE user_id = $1;
             `,
         [req.userId]);
         res.json(result.rows);
@@ -173,6 +173,7 @@ app.get('/api/complete/:id', async(req, res) => {
         `, [id]);
         
         res.json(result.rows[0]);
+        res.send('Marked Complete');
     }
     catch (err) {
         logError(res, err);
@@ -181,7 +182,7 @@ app.get('/api/complete/:id', async(req, res) => {
 
 // Cron to find and send nags
 //new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
-//sendNags();
+// sendNags();
 // Cron to reset recurring nags at midnight
 //new Cron('0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 

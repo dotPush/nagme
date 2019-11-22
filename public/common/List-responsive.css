@@ -1,3 +1,7 @@
+.mobile {
+    display: none;
+}
+    
 /* Tablet */
 .wrapper {
     max-width: 1024px;
@@ -37,9 +41,6 @@
     .nav-logo {
         max-height: 300px;
         max-width: 200px;
-    }
-    .mobile {
-        display: none;
     }
 }
 

@@ -144,6 +144,7 @@ class NagApp extends Component {
         try {
             console.log('initial-load');
             const nags = await getNags();
+            console.log(nags);
             this.state.nags = nags;
             nagList.update({ nags });
         }

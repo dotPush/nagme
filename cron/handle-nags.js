@@ -16,7 +16,7 @@ const getAllNags = async() => {
     try {
         const result = await client.query(`
             SELECT
-            nags.id,
+            nags.id AS "completeId",
             task,
             notes,
             start_time AS "startTime",
@@ -35,7 +35,7 @@ const getAllNags = async() => {
             recurs,
             complete,
             id_string AS "idString",
-            users.id AS "completeId",
+            users.id AS "userId",
             push_api_key AS "pushApiKey"
             FROM users JOIN nags
             ON users.id = nags.user_id;
