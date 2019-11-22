@@ -4,7 +4,7 @@ class AddNag extends Component {
 
     onRender(form) {
         const { onAdd, onRemove, loadNag } = this.props;
-
+        console.log('loadNag', loadNag);
         const myTextArea = form.querySelector('textarea');
         loadNag && (myTextArea.value = loadNag.notes);
 
@@ -28,12 +28,10 @@ class AddNag extends Component {
                 fri: !!formData.get('fri'),
                 sat: !!formData.get('sat'),
                 sun: !!formData.get('sun'),
-                recurs: form.elements['recurs'][0].checked,
+                recurs: form.elements['recurs'][0].checked || false,
                 period: 'm',
             };
-
-            console.log(nag);
-
+            console.log('formNag', nag);
             try {
                 if (nag.id) {
                     await onRemove(nag);
@@ -41,11 +39,16 @@ class AddNag extends Component {
 
                 await onAdd(nag);
 
-                form.reset();
                 document.activeElement.blur();
             }
             catch (err) {
                 // App will show error, this catch keeps form from clearing
+            }
+            finally {
+                this.update({ loadNag: {
+                    task: '',
+                    notes: '',
+                } });
             }
         });
     }
@@ -126,17 +129,17 @@ class AddNag extends Component {
                             required>
                     </p>
                     <fieldset><legend>Days of week</legend>
-                        <input type="checkbox" name="mon" value="mon" checked>Monday(s)<br>
-                        <input type="checkbox" name="tue" value="tue" checked>Tueday(s)<br>
-                        <input type="checkbox" name="wed" value="wed" checked>Wednesday(s)<br>
-                        <input type="checkbox" name="thu" value="thu" checked>Thurday(s)<br>
-                        <input type="checkbox" name="fri" value="fri" checked>Friday(s)<br>
-                        <input type="checkbox" name="sat" value="sat" checked>Saturday(s)<br>
-                        <input type="checkbox" name="sun" value="sun" checked>Sunday(s)<br>
+                        <input type="checkbox" name="mon" value="mon" ${loadNag && loadNag.mon && 'checked'}>Monday<br>
+                        <input type="checkbox" name="tue" value="tue" ${loadNag && loadNag.tue && 'checked'}>Tueday<br>
+                        <input type="checkbox" name="wed" value="wed" ${loadNag && loadNag.wed && 'checked'}>Wednesday<br>
+                        <input type="checkbox" name="thu" value="thu" ${loadNag && loadNag.thu && 'checked'}>Thursday<br>
+                        <input type="checkbox" name="fri" value="fri" ${loadNag && loadNag.fri && 'checked'}>Friday<br>
+                        <input type="checkbox" name="sat" value="sat" ${loadNag && loadNag.sat && 'checked'}>Saturday<br>
+                        <input type="checkbox" name="sun" value="sun" ${loadNag && loadNag.sun && 'checked'}>Sunday<br>
                     </fieldset>
                     Is this a recurring task?
-                    <input type="radio" name="recurs" value="true">Yes
-                    <input type="radio" name="recurs" value="false" checked>No<br>
+                    <input type="radio" name="recurs" value="true" ${loadNag && loadNag.recurs && 'checked'}>Yes
+                    <input type="radio" name="recurs" value="false" ${(!loadNag || (loadNag && !loadNag.recurs)) && 'checked'}>No<br>
                     <button class="save-button" type="submit" name='action'>Save</button>
                     <input type="reset" value="Clear" />
                 </div>

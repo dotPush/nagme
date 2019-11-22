@@ -82,7 +82,7 @@ const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
         && minutesSinceStart > 0                              // and it is after start time
         //&& (nag.endTime && nowTime.isBefore(nag.endTime))   // and if there is an end time and we haven't exceeded it
         && (nag.endTime ? minutesTilEnd > 0 : true)           // and if there is an end time and we haven't exceeded it
-        && (dayNumsArr.length > 0 ? isDayOfWeek : true)       // and there are days selected and this is one of them
+        && (dayNumsArr.length > 0 ? isDayOfWeek(nag) : true)       // and there are days selected and this is one of them
         && (
             minutesSinceStart % nag.interval === 0 ||         // and this is one of the regularly recurring time intervals of a requested nag
             (nag.minutesAfterTheHour && moment().minutes() === nag.minutesAfterTheHour)    // or it is one of the number of minutes after the hour
