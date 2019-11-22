@@ -2,23 +2,18 @@ const URL = '/api';
 
 //const token = localStorage.getItem('TOKEN');
 const user = JSON.parse(localStorage.getItem('USER'));
-
 const token = user && user.token;
 
 // redirect to home page if not logged in and not on home page
 if (!token && !(location.pathname === '/' || location.pathname === '/index.html')) {
-
-    //const searchParams = new URLSearchParams();
-    // searchParams.set('redirect', location.pathname);
-    // location = `/?${searchParams.toString()}`;
     location = `/`;
 }
 
 // redirect to list if logged in
 if (token && (location.pathname === '/' || location.pathname === '/index.html')) {
-
     location = `/list.html`;
 }
+
 const fetchWithError = async(url, options) => {
     if (token) {
         options = options || {};
@@ -64,16 +59,10 @@ export const getNags = () => {
     return fetchWithError(url);
 };
 
-
 export const getNagById = (id) => {
     const url = `${URL}/nags/${id}`;
     return fetchWithError(url);
 };
-
-// export const getNagLists = () => {
-//     const url = `${URL}/lists`;
-//     return fetchWithError(url);
-// };
 
 export const addNag = nag => {
     console.log('addNag', nag);
@@ -87,49 +76,9 @@ export const addNag = nag => {
     });
 };
 
-// export const addCategory = list => {
-//     const url = `${URL}/lists`;
-//     return fetchWithError(url, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(list)
-//     });
-// };
-
-// export const updateNag = nag => {
-//     const url = `${URL}/nags/${nag.id}`;
-//     return fetchWithError(url, {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(nag)
-//     });
-// };
-
-// export const updateCategory = list => {
-//     const url = `${URL}/lists/${list.id}`;
-//     return fetchWithError(url, {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(list)
-//     });
-// };
-
 export const removeNag = nagId => {
     const url = `${URL}/nags/${nagId}`;
     return fetchWithError(url, {
         method: 'DELETE',
     });
 };
-
-// export const removeList = listId => {
-//     const url = `${URL}/lists/${listId}`;
-//     return fetchWithError(url, {
-//         method: 'DELETE',
-//     });
-// };

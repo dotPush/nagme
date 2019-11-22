@@ -1,7 +1,9 @@
 require('dotenv').config();
 const client = require('../lib/client');
 const moment = require('moment');
+
 const fetch = require('node-fetch');
+require('dotenv').config();
 
 const fetchWithError = async(url, options) => {
     const response = await fetch(url, options);
@@ -14,6 +16,7 @@ const getAllNags = async() => {
     try {
         const result = await client.query(`
             SELECT
+            nags.id,
             task,
             notes,
             start_time AS "startTime",
@@ -57,18 +60,32 @@ const isDayOfWeek = nag => {
         .includes(moment().isoWeekday());
 };
 
+// https://stackoverflow.com/questions/11038252/how-can-i-calculate-the-difference-between-two-times-that-are-in-24-hour-format
+// https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
+const timeDiff = timeStr => {
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2, '0');
+    const mm = String(now.getMonth() + 1).padStart(2, '0'); //January is 0
+    const yyyy = now.getFullYear();
+    const theDate = mm + '/' + dd + '/' + yyyy;
+
+    const startTime = new Date(theDate + ' ' + timeStr);
+    return Math.floor((now - startTime) / 60000); //difference in minutes
+};
+
 const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
-    const now = moment();
-    const nowTime = moment.utc(now, 'HH:mm');
-    const diff = moment.duration(nowTime.diff(nag.startTime)).asMinutes();
-    return (                                                // return true if:
-        !snoozed &&                                         // nag is not snoozed
-        nowTime.isAfter(nag.startTime) &&                   // and it is after start time
-        (nag.endTime && nowTime.isBefore(nag.endTime)) &&   // and if there is an end time and we haven't exceeded it
-        (dayNumsArr && isDayOfWeek) &&                      // and there are days selected and this is one of them
-        (
-            diff % nag.interval === 0 ||                    // and this is one of the regularly recurring time intervals of a requested nag
-            moment().minutes() === nag.minutesAfterTheHour      // or it is one of the number of minutes after the hour
+    const minutesSinceStart = timeDiff(nag.startTime);
+    const minutesTilEnd = -timeDiff(nag.endTime);
+    return (                                                  // return true if:
+        !snoozed                                              // nag is not snoozed
+        //nowTime.isAfter(nag.startTime) &&                   // and it is after start time
+        && minutesSinceStart > 0                              // and it is after start time
+        //&& (nag.endTime && nowTime.isBefore(nag.endTime))   // and if there is an end time and we haven't exceeded it
+        && (nag.endTime ? minutesTilEnd > 0 : true)           // and if there is an end time and we haven't exceeded it
+        && (dayNumsArr.length > 0 ? isDayOfWeek : true)       // and there are days selected and this is one of them
+        && (
+            minutesSinceStart % nag.interval === 0 ||         // and this is one of the regularly recurring time intervals of a requested nag
+            (nag.minutesAfterTheHour && moment().minutes() === nag.minutesAfterTheHour)    // or it is one of the number of minutes after the hour
         )
     );
 };
@@ -77,11 +94,11 @@ const sendNags = async() => {
     console.log('sendNags');
     const allNags = await getAllNags();
     allNags.forEach(async nag => {
-        nag.startTime = moment.utc(nag.start_time, 'HH:mm');
         if (
-            nag.pushApiKey &&
-            nag.pushApiKey.length === 30 &&
-            isTimeForNag(nag) === 0)
+            nag.pushApiKey
+            && nag.pushApiKey.length === 30
+            && isTimeForNag(nag)
+        )
         {
             try {
                 const url = `https://api.pushover.net/1/messages.json`;
@@ -95,7 +112,7 @@ const sendNags = async() => {
                         user: nag.pushApiKey,
                         message: nag.task,
                         url: `https://nagmeapp.herokuapp.com/api/complete/${nag.completeId}`,
-                        url_title: 'CLICK HERE to DELETE NAG'
+                        url_title: 'CLICK HERE MARK COMPLETE'
                     })        
                 });
             }
@@ -109,8 +126,8 @@ const updateRecurNags = async() => {
     try {
         const result = await client.query(`
             UPDATE nags 
-            SET complete = false
-            WHERE recurs
+            SET complete = FALSE
+            WHERE recurs = TRUE
             RETURNING *;
         `,);
         return result.rows;

@@ -26,7 +26,6 @@ const authRoutes = createAuthRoutes({
         ).then(result => result.rows[0]);
     },
     insertUser(user, hash) {
-        console.log(user);
         return client.query(`
             INSERT into users (push_api_key, email, password_hash, display_name)
             VALUES ($1, $2, $3, $4)
@@ -58,10 +57,31 @@ const logError = (res, err) => {
 
 // *** NAGS ***
 app.get('/api/nags', async(req, res) => {
+    console.log('getting nags');
     try {
         const result = await client.query(`
-            SELECT * FROM nags
-            WHERE user_id = $1;
+            SELECT
+            id,
+            task,
+            notes,
+            start_time AS "startTime",
+            end_time AS "endTime",
+            interval,
+            minutes_after_hour AS "minutesAfterHour",
+            snoozed,
+            period,
+            mon,
+            tue,
+            wed,
+            thu,
+            fri,
+            sat,
+            sun,
+            recurs,
+            complete,
+            id_string AS "idString"
+            FROM nags
+            WHERE id = $1;
             `,
         [req.userId]);
         res.json(result.rows);
@@ -99,8 +119,8 @@ app.get('/api/nags/:id', async(req, res) => {
     const id = req.params.id;
     try {
         const result = await client.query(`
-        SELECT * FROM nags
-        WHERE id = $1;
+            SELECT * FROM nags
+            WHERE id = $1;
         `, [id]);
      
         res.json(result.rows);
@@ -160,10 +180,10 @@ app.get('/api/complete/:id', async(req, res) => {
 });
 
 // Cron to find and send nags
-new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
-
-// Cron to reset recurring nags one second after midnight
-new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
+//new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
+//sendNags();
+// Cron to reset recurring nags at midnight
+//new Cron('0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {
