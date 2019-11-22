@@ -2,6 +2,7 @@ require('dotenv').config();
 const client = require('../lib/client');
 const moment = require('moment');
 const fetch = require('node-fetch');
+const superagent = require('superagent');
 
 const fetchWithError = async(url, options) => {
     const response = await fetch(url, options);
@@ -75,13 +76,17 @@ const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
 
 const sendNags = async() => {
     const allNags = await getAllNags();
+    console.log('inside sendNags');
     allNags.forEach(async nag => {
+        console.log(nag);
         nag.startTime = moment.utc(nag.start_time, 'HH:mm');
+        
         if (
             nag.pushApiKey &&
             nag.pushApiKey.length === 30 &&
             isTimeForNag(nag) === 0)
         {
+            console.log("nag being sent to: " + nag.pushApiKey);
             try {
                 const url = `https://api.pushover.net/1/messages.json`;
                 return await fetchWithError(url, {
@@ -117,5 +122,59 @@ const updateRecurNags = async() => {
         console.log(err); 
     }
 }; 
+
+const rainIds = async() => {
+    try {
+        const result = await client.query(`
+            SELECT *
+            FROM users JOIN nags
+            ON users.id = nags.user_id
+            WHERE nags.task LIKE 'UMBRELLACHECK';
+        `);
+        return result.rows;
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+const umbrellaCheck = async() => {
+    const lat = '45.5051';
+    const long = '122.6750';
+    const checkWeather = await superagent.get(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${long}`);
+    //const actualWeatherData = JSON.parse(weatherData.text);
+    //const rainProbability = parseFloat(actualWeatherData.currently.precipProbability, 10);
+    //HARD CODE PROBABILITY!!!!!
+    const rainProbability = .5;
+    if(rainProbability > .4){
+        const umbrellaNags = await rainIds();
+        console.log('insideumbrella');
+        console.log(umbrellaNags);
+        umbrellaNags.forEach(async nag => {
+            if (
+                nag.push_api_key &&
+                nag.push_api_key.length === 30) {
+                    try {
+                        const url = `https://api.pushover.net/1/messages.json`;
+                        return await fetchWithError(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                token: process.env.PUSHOVER_TOKEN,
+                                user: nag.push_api_key,
+                                message: 'Greater Than 40% chance of rain',
+                                url: `https://nagmeapp.herokuapp.com/api/complete/${nag.user_id}`,
+                                url_title: 'CLICK HERE to DELETE NAG'
+                            })        
+                        });
+                    }
+                    catch (err) { console.log('error ' + err); }
+                }
+        });
+    }
+}
+exports.umbrellaCheck = umbrellaCheck;
 exports.sendNags = sendNags;
 exports.updateRecurNags = updateRecurNags;
