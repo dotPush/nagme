@@ -49,17 +49,9 @@ fieldset {
 }
 
 .days-week {
-
+    margin-top: 20px;
     width: 400px;
     justify-content: space-between;
     text-align: right;
 
-}
-
-
-fieldset 
-{
-    margin:
-    0;padding:0;
-    border:solid
 }
