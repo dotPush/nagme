@@ -28,14 +28,16 @@ class SignIn extends Component {
                     <label for="signin-email">Email</label>
                     <input id="signin-email" type="email" name="email" required placeholder="you@somewhere.com">
                 </p>
-                
+                <br>
                 <p>
                     <label for="signin-password">Password</label>
                     <input id="signin-password" type="password" name="password" required>
                 </p>
+                <br>
                 <p>
                     <button>Sign In</button>
                 </p>
+                <br>
             </form>
         `;
     }

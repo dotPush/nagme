@@ -22,21 +22,20 @@ class Header extends Component {
     }
 
     renderHTML() {
-        const title = this.props.title || 'NagMe';
 
         return /*html*/`
-        <header class="header">
-        <nav>
-        <span class="logged-in-as"></span>
-            <a id="item1" href="./">Home</a>
-            <a id="item3"  href="./list.html">Nags</a>
-            <a id="item2" href="./about-us.html">About Us</a>
-            <button id="item3" class="log-out hidden">Log Out</button>
-        </nav>
-        <div class="logo">
-            <img class="nav-logo" src="./assets/2.png">
-        </div>
-    </header> 
+
+            <header class="header">
+            <nav >
+                <a id="item1" href="./">Home</a>
+                <a id="item2" href="./about-us.html">About Us</a>
+                <button id="item3" class="log-out hidden">Log Out</button>
+         </nav>
+            <div class="logo">
+                <img class="nav-logo" src="./assets/NMBigLogo.png">
+              </div>
+                </header>
+
         `;
     }
 }

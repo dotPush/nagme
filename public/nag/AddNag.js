@@ -32,6 +32,7 @@ class AddNag extends Component {
     renderHTML() {
         return /*html*/`
         <form class="add-nag-form">
+        <div class = "add-nag-div">
         <p>
             <label for="nag-name">Nag Name</label>
             <input
@@ -41,6 +42,7 @@ class AddNag extends Component {
                 placeholder="Add Nag Name"
                 required>
         </p>
+        <br>
         <p>
             <label for="notes">Notes</label>
             <textarea
@@ -48,6 +50,7 @@ class AddNag extends Component {
                 name="notes"
                 placeholder="Add Notes"></textarea>
         </p>
+        <br>
         <p>
             <label for="startTime">Start Time</label>
             <input
@@ -57,18 +60,25 @@ class AddNag extends Component {
                 value="12:00"
                 required>
         </p>
+        <br>
         <p>
             <label for="interval">Interval (in minutes)</label>
             <input
+           
                 type="number"
                 id="interval"
                 name="interval"
                 min="1"
                 max="60"
                 required>
+
         </p>
-        <input type="submit" value="Add Nag">
+        <br>
+        <input id="submit" type="submit" value="Add Nag">
+       </div>
     </form>
+
+ 
         `;
     }
 }
