@@ -20,7 +20,7 @@ class AddNag extends Component {
                 startTime: formData.get('start-time'),
                 endTime: formData.get('end-time'),
                 interval: parseInt(formData.get('interval')),
-                minutesAfterHour: !formData.get('mah-checked') && formData.get('minutes-after-hour'),
+                minutesAfterHour: formData.get('minutes-after-hour') !== '' ? parseInt(formData.get('minutes-after-hour')) : -1,
                 mon: !!formData.get('mon'),
                 tue: !!formData.get('tue'),
                 wed: !!formData.get('wed'),
@@ -121,7 +121,6 @@ class AddNag extends Component {
                             min="0"
                             max="59"
                             value="${loadNag ? loadNag.minutesAfterHour : ''}">
-                            <input type="checkbox" name="mah-checked" value="mah-checked">
                     </p>
                     <p>
                         <input
