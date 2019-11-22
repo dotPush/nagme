@@ -80,6 +80,7 @@ class AddNag extends Component {
                     <p>
                         <label for="startTime">Start Time</label>
                         <input
+                            class="timeInput"
                             type="time"
                             id="start-time"
                             name="start-time"
@@ -89,6 +90,7 @@ class AddNag extends Component {
                     <p>
                         <label for="endTime">End Time</label>
                         <input
+                        class="timeInput"
                             type="time"
                             id="end-time"
                             name="end-time"
@@ -125,6 +127,7 @@ class AddNag extends Component {
                             value="${loadNag ? loadNag.id : ''}"
                             required>
                     </p>
+                    <div class="days-week">
                     <fieldset><legend>Days of week</legend>
                         <input type="checkbox" name="mon" value="mon" checked>Monday(s)<br>
                         <input type="checkbox" name="tue" value="tue" checked>Tueday(s)<br>
@@ -134,11 +137,16 @@ class AddNag extends Component {
                         <input type="checkbox" name="sat" value="sat" checked>Saturday(s)<br>
                         <input type="checkbox" name="sun" value="sun" checked>Sunday(s)<br>
                     </fieldset>
+                    <fieldset>
                     Is this a recurring task?
                     <input type="radio" name="recurs" value="true">Yes
                     <input type="radio" name="recurs" value="false" checked>No<br>
                     <button class="save-button" type="submit" name='action'>Save</button>
-                    <input type="reset" value="Clear" />
+                
+                    <input class="buttonClear" type="reset" value="Clear" />
+               
+                    </fieldset>
+                    </div>
                 </div>
             </form>
         `;
