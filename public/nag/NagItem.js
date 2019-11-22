@@ -13,13 +13,12 @@ class NagItem extends Component {
         //     nag.complete = !nag.complete;
         //     onUpdate(nag);
         // });
-        // const nagDetailsButton = dom.querySelector('.details-button');
-        // nagDetailsButton.addEventListener('click', () => {
-        //     // event.preventDefault();
-        //     if (confirm('Would you like to see the nag details?')) {
-        //         window.location = `details.html?id=${nag.id}`;
-        //     }
-        // });
+
+        const nagDetailsButton = dom.querySelector('.details-button');
+        nagDetailsButton.addEventListener('click', () => {
+            window.location = `details.html?id=${nag.id}`;
+        });
+
         const removeSpan = dom.querySelector('.delete-button');
         //const removeNag = document.getElementById('${nag.id}');
         removeSpan.addEventListener('click', () => {
