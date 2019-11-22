@@ -10,6 +10,7 @@ const Cron = require('cron').CronJob;
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
 const updateRecurNags = handleNag.updateRecurNags;
+const umbrellaCheck = handleNag.umbrellaCheck;
 const { getIdString } = require('./node-utils/getIdString');
 
 // Auth
@@ -200,10 +201,12 @@ app.get('/api/complete/:id', async(req, res) => {
 });
 
 // Cron to find and send nags
-//new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
-// sendNags();
-// Cron to reset recurring nags at midnight
-//new Cron('0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
+new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
+// Cron to reset recurring nags one second after midnight
+new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
+// Cron for general nag to take your umbrella for your commute
+new Cron('0 45 7 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
+//new Cron('0 45 20 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
 
 // listen for cron
 app.listen('3128', () => {

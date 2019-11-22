@@ -6,3 +6,57 @@ li{
 .no-display {
     display: none;
 }
+ 
+label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 400px;
+    justify-content:space-between;
+    align-content:right;
+    text-align:right;
+}
+input {
+    height: 15px;
+}
+.timeInput{
+    width: 130px;
+}
+
+  label, input {
+      vertical-align: center;
+      display:inline;
+  }
+
+   
+/* p {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 400px;
+    justify-content:space-between;
+    text-align:right;
+} */
+
+fieldset {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color:white;
+}
+
+.days-week {
+    margin-top: 20px;
+}
+
+.add-nag-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 400px;
+    justify-content:space-between;
+    text-align:right;
+    margin-bottom: 20px;
+    margin-left:auto;
+    margin-right:auto;
+}

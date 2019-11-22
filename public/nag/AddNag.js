@@ -83,6 +83,7 @@ class AddNag extends Component {
                     <p>
                         <label for="startTime">Start Time</label>
                         <input
+                            class="timeInput"
                             type="time"
                             id="start-time"
                             name="start-time"
@@ -92,6 +93,7 @@ class AddNag extends Component {
                     <p>
                         <label for="endTime">End Time</label>
                         <input
+                        class="timeInput"
                             type="time"
                             id="end-time"
                             name="end-time"
@@ -128,6 +130,7 @@ class AddNag extends Component {
                             value="${loadNag ? loadNag.id : ''}"
                             required>
                     </p>
+                    <div class="days-week">
                     <fieldset><legend>Days of week</legend>
                         <input type="checkbox" name="mon" value="mon" ${loadNag && loadNag.mon && 'checked'}>Monday<br>
                         <input type="checkbox" name="tue" value="tue" ${loadNag && loadNag.tue && 'checked'}>Tueday<br>
@@ -137,11 +140,16 @@ class AddNag extends Component {
                         <input type="checkbox" name="sat" value="sat" ${loadNag && loadNag.sat && 'checked'}>Saturday<br>
                         <input type="checkbox" name="sun" value="sun" ${loadNag && loadNag.sun && 'checked'}>Sunday<br>
                     </fieldset>
+                    <fieldset>
                     Is this a recurring task?
                     <input type="radio" name="recurs" value="true" ${loadNag && loadNag.recurs && 'checked'}>Yes
                     <input type="radio" name="recurs" value="false" ${(!loadNag || (loadNag && !loadNag.recurs)) && 'checked'}>No<br>
                     <button class="save-button" type="submit" name='action'>Save</button>
-                    <input type="reset" value="Clear" />
+                
+                    <input class="buttonClear" type="reset" value="Clear" />
+               
+                    </fieldset>
+                    </div>
                 </div>
             </form>
         `;
