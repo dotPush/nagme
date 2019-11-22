@@ -35,7 +35,6 @@ class NagApp extends Component {
 
                     // part 3: tell component to update
                     nagList.update({ nags });
-
                 }
                 catch (err) {
                     // display error
@@ -75,12 +74,15 @@ class NagApp extends Component {
                 }
             }
         });
-
-
         main.appendChild(addNagSection.renderDOM());
 
         const nagList = new NagList({ 
             nags: [],
+
+            onAnyClick: (nag) => {
+                addNagSection.update({ loadNag:nag });
+            },
+
             // onUpdate: async nag => {
             //     loading.update({ loading: true });
             //     // clear prior error
@@ -108,10 +110,6 @@ class NagApp extends Component {
             //         loading.update({ loading: false });
             //     }
             // },
-
-            onAnyClick: (nag) => {
-                addNagSection.update({ forceNag:nag });
-            },
             
             onRemove: async nag => {
                 loading.update({ loading: true });
@@ -144,7 +142,9 @@ class NagApp extends Component {
        
         // initial nag load:
         try {
+            console.log('initial-load');
             const nags = await getNags();
+            console.log(nags);
             this.state.nags = nags;
             nagList.update({ nags });
         }
@@ -155,25 +155,23 @@ class NagApp extends Component {
         finally {
             loading.update({ loading: false });
         }
-
     }
 
     renderHTML() {
         return /*html*/`
-        <div class="wrapper">
-            <div class="NagApp">
-                <!-- header goes here -->
-                <!-- show errors: -->
-                <p class="error"></p>
-                <main>
-                    <!-- add nag goes here -->
-                    
-                </main>
+            <div class="wrapper">
+                <div class="NagApp">
+                    <!-- header goes here -->
+                    <!-- show errors: -->
+                    <p class="error"></p>
+                    <main>
+                        <!-- add nag goes here -->
+                    </main>
                 </div>
                 <section class="content">
-                 <!-- nag list goes here -->
+                    <!-- nag list goes here -->
                 </section>
-        </div>
+            </div>
         `;
     }
 }

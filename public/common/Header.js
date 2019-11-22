@@ -4,8 +4,11 @@ class Header extends Component {
         if (localStorage.getItem('USER')) {
             const user = JSON.parse(localStorage.getItem('USER'));
             //USER.displayName
-            const displayUserName = dom.querySelector('.logged-in-as');
-            displayUserName.textContent = `Logged in as ${user.displayName}`;
+            //const displayUserName = dom.querySelector('.logged-in-as');
+            //displayUserName.textContent = `Logged in as ${user.displayName}`;
+
+            const listA = dom.querySelectorAll(`a[href="./list.html"]`);
+            listA[0].innerHTML = `${user.displayName}'s Nags`;
             const button = dom.querySelector('.log-out');
             button.classList.remove('hidden');
             button.addEventListener('click', () => {
@@ -18,17 +21,17 @@ class Header extends Component {
     renderHTML() {
         return /*html*/`
         <header class="header">
-        <nav>
-        <span class="logged-in-as"></span>
-            <a id="item1" href="./">Home</a>
-            <a id="item3"  href="./list.html">Nags</a>
-            <a id="item2" href="./about-us.html">About Us</a>
-            <button id="item3" class="log-out hidden">Log Out</button>
-        </nav>
-        <div class="logo">
-            <img class="nav-logo" src="./assets/2.png">
-        </div>
-    </header> 
+            <nav>
+            <span class="logged-in-as"></span>
+                <a class="nav-link" href="./">Home</a>
+                <a class="nav-link" href="./list.html">Nags</a>
+                <a class="nav-link" href="./about-us.html">About Us</a>
+                <button class="log-out hidden">Log Out</button>
+            </nav>
+            <div class="logo">
+                <img class="nav-logo" src="./assets/2.png">
+            </div>
+        </header>
         `;
     }
 }

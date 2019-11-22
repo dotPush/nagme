@@ -13,6 +13,7 @@
 .logo {
   text-align:center;
 }
+
 body {
     background-color: #43cfec;
 }
@@ -41,12 +42,14 @@ nav {
     font-weight: 400;
 }
 
-
-#item1 , #item2, #item3 {
+.nav-link {
     padding-right: 10px;
     padding-left: 7px;
 }
 
+a[href="./list.html"] {
+    font-weight: 700;
+}
 
 p {
     color: #ffffff;
@@ -68,15 +71,11 @@ h3 {
 
 .hidden {
     display: none;
-
 }
-
 
 .the-team {
     text-align:center;
-
 }
-
 
 .team-list {
     padding-left: 0;
@@ -85,23 +84,17 @@ h3 {
     width: 100vw;
     flex-direction: column;
     letter-spacing: 0px;
-    
-    
 }
-
 
 .team-list li {
     list-style-type: none;
     padding: 0 15px;
-    
 }
-
 
 .team-list li img {
     width: 200px;
     border-radius: 100px;
     text-align:center;
-
 }
 
 .team-h1 {
