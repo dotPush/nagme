@@ -27,7 +27,6 @@ const authRoutes = createAuthRoutes({
         ).then(result => result.rows[0]);
     },
     insertUser(user, hash) {
-        console.log(user);
         return client.query(`
             INSERT into users (push_api_key, email, password_hash, display_name)
             VALUES ($1, $2, $3, $4)
@@ -59,9 +58,30 @@ const logError = (res, err) => {
 
 // *** NAGS ***
 app.get('/api/nags', async(req, res) => {
+    console.log('getting nags');
     try {
         const result = await client.query(`
-            SELECT * FROM nags
+            SELECT
+            id,
+            task,
+            notes,
+            start_time AS "startTime",
+            end_time AS "endTime",
+            interval,
+            minutes_after_hour AS "minutesAfterHour",
+            snoozed,
+            period,
+            mon,
+            tue,
+            wed,
+            thu,
+            fri,
+            sat,
+            sun,
+            recurs,
+            complete,
+            id_string AS "idString"
+            FROM nags
             WHERE user_id = $1;
             `,
         [req.userId]);
@@ -71,22 +91,6 @@ app.get('/api/nags', async(req, res) => {
         logError(res, err);
     }
 });
-
-// app.get('/api/lists', async (req, res) => {
-//     try {
-//         const result = await client.query(`
-//             SELECT * FROM lists
-//             WHERE user_id = $1
-//             ORDER BY name ASC;
-//         `,
-//         [req.userId]);
-//
-//         res.json(result.rows);
-//     }
-        // catch (err) {
-        //     logError(res, err);
-        // }
-// });
 
 app.post('/api/nags', async(req, res) => {
     const nag = req.body;
@@ -112,33 +116,12 @@ app.post('/api/nags', async(req, res) => {
     }
 });
 
-// app.post('/api/lists', async (req, res) => {
-//     const { name } = req.body;
-//     //CDM
-//     console.log(name);
-//     try {
-//         const result = await client.query(`
-//             INSERT INTO lists (user_id, name)
-//             VALUES ($1, $2)
-//             RETURNING *;
-//         `,
-//         [req.userId, name]);
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
-
 app.get('/api/nags/:id', async(req, res) => {
     const id = req.params.id;
     try {
         const result = await client.query(`
-        SELECT * FROM nags
-        WHERE id = $1;
+            SELECT * FROM nags
+            WHERE id = $1;
         `, [id]);
      
         res.json(result.rows);
@@ -191,64 +174,19 @@ app.get('/api/complete/:id', async(req, res) => {
         `, [id]);
         
         res.json(result.rows[0]);
+        res.send('Marked Complete');
     }
     catch (err) {
         logError(res, err);
     }
 });
 
-// app.put('/api/nags/:id', async(req, res) => {
-//     const id = req.params.id;
-//     const nag = req.body;
-//     try {
-//         const result = await client.query(`
-//         UPDATE nags (
-//             id,
-//             task,
-//             notes,
-//             start_time,
-//             interval,
-//             period,
-//             user_id,
-//             id_string
-//         WHERE id = $1;
-//         )
-//         VALUES ($1, $2, $3, $4, $5, $6, $7 $8)
-//         RETURNING *;
-
-//         `, [id, nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
-
-// app.delete('/api/lists/:id', async (req, res) => {
-//     const id = req.params.id;
-//     try {
-//         const result = await client.query(`
-//             DELETE FROM lists
-//             WHERE id = $1
-//             RETURNING *;
-//         `, [id]);
-        
-//         res.json(result.rows[0]);
-//     }
-        // catch (err) {
-        //     logError(res, err);
-        // }
-// });
-
 // Cron to find and send nags
 new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
 // Cron to reset recurring nags one second after midnight
 new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 // Cron for nag to take your umbrella
-new Cron('0 45 8 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
+new Cron('0 35 9 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
 //new Cron('0 45 20 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
 
 // listen for cron

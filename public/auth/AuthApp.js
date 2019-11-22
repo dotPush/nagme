@@ -6,9 +6,6 @@ import { signUp as userSignUp, signIn as userSignIn } from '../services/nagme-ap
 
 function success(user) {
     localStorage.setItem('USER', JSON.stringify(user));
-    //const searchParams = new URLSearchParams(location.search);
-    //CHANGEME
-    //location = searchParams.get('redirect') || '/';
     location = '/list.html';
 }
 
@@ -22,11 +19,13 @@ class AuthApp extends Component {
         const errors = dom.querySelector('.errors');
         const signUpContainer = dom.querySelector('#signup-container');
         const signInContainer = dom.querySelector('#signin-container');
+        const loginSection = dom.querySelector('.section');
         
         // hide signup and signin if user is logged in
         if (localStorage.getItem('USER')) {
-            signUpContainer.classList.add('hidden');
-            signInContainer.classList.add('hidden');
+            //signUpContainer.classList.add('hidden');
+            //signInContainer.classList.add('hidden');
+            loginSection.classList.add('hidden');
         }
 
         const signUp = new SignUp({
@@ -76,27 +75,26 @@ class AuthApp extends Component {
 
     renderHTML() {
         return /*html*/`
-        <div class="wrapper">
-\
-            <div>
-                <!-- header goes here -->
-                <main class="content">
-                <div class="section">
-                    <p class="errors"></p>
-                    <section id="signup-container"
-                        class="no-display">
-                        <p class="switch">
-                            <button id="signin-button">Already a User?</button>
-                        </p>
-                    </section>
-                    <section id="signin-container">
-                        <p class="switch">
-                            <button id="signup-button">Need to create an Account?</button>
-                        </p>
-                    </section>
-                    </div>
-                </main class="content">
-            </div>
+            <div class="wrapper">
+                <div>
+                    <!-- header goes here -->
+                    <main class="content">
+                    <div class="section">
+                        <p class="errors"></p>
+                        <section id="signup-container"
+                            class="no-display">
+                            <p class="switch">
+                                <button id="signin-button">Already a User?</button>
+                            </p>
+                        </section>
+                        <section id="signin-container">
+                            <p class="switch">
+                                <button id="signup-button">Need to create an Account?</button>
+                            </p>
+                        </section>
+                        </div>
+                    </main class="content">
+                </div>
             </div>
         `;
     }
