@@ -45,8 +45,37 @@ class NagApp extends Component {
                 finally {
                     loading.update({ loading: false });
                 }
+            },
+            onRemove: async nag => {
+                loading.update({ loading: true });
+                // clear prior error
+                error.textContent = '';
+
+                try {
+                    // part 1: do work on the server
+                    await removeNag(nag.id);
+                    
+                    // part 2: integrate back into our list
+                    const { nags } = this.state;        
+                    // find the index of this type:
+                    const index = nags.indexOf(nag);
+                    // remove from the list
+                    nags.splice(index, 1);
+    
+                    // part 3: tell component to update
+                    nagList.update({ nags });
+                }
+                catch (err) {
+                    // display error
+                    console.log(err);
+                }
+                finally {
+                    loading.update({ loading: false });
+                }
             }
         });
+
+
         main.appendChild(addNagSection.renderDOM());
 
         const nagList = new NagList({ 
@@ -82,11 +111,11 @@ class NagApp extends Component {
             onAnyClick: (nag) => {
                 addNagSection.update({ forceNag:nag });
             },
+            
             onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
                 error.textContent = '';
-
                 try {
                     // part 1: do work on the server
                     await removeNag(nag.id);
