@@ -9,7 +9,6 @@ const client = require('./lib/client');
 const Cron = require('cron').CronJob;
 const handleNag = require('./cron/handle-nags');
 const sendNags = handleNag.sendNags;
-
 const updateRecurNags = handleNag.updateRecurNags;
 const { getIdString } = require('./node-utils/getIdString');
 
@@ -72,22 +71,6 @@ app.get('/api/nags', async(req, res) => {
     }
 });
 
-// app.get('/api/lists', async (req, res) => {
-//     try {
-//         const result = await client.query(`
-//             SELECT * FROM lists
-//             WHERE user_id = $1
-//             ORDER BY name ASC;
-//         `,
-//         [req.userId]);
-//
-//         res.json(result.rows);
-//     }
-        // catch (err) {
-        //     logError(res, err);
-        // }
-// });
-
 app.post('/api/nags', async(req, res) => {
     const nag = req.body;
     try {
@@ -111,27 +94,6 @@ app.post('/api/nags', async(req, res) => {
         logError(res, err);
     }
 });
-
-// app.post('/api/lists', async (req, res) => {
-//     const { name } = req.body;
-//     //CDM
-//     console.log(name);
-//     try {
-//         const result = await client.query(`
-//             INSERT INTO lists (user_id, name)
-//             VALUES ($1, $2)
-//             RETURNING *;
-//         `,
-//         [req.userId, name]);
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
 
 app.get('/api/nags/:id', async(req, res) => {
     const id = req.params.id;
@@ -197,54 +159,9 @@ app.get('/api/complete/:id', async(req, res) => {
     }
 });
 
-// app.put('/api/nags/:id', async(req, res) => {
-//     const id = req.params.id;
-//     const nag = req.body;
-//     try {
-//         const result = await client.query(`
-//         UPDATE nags (
-//             id,
-//             task,
-//             notes,
-//             start_time,
-//             interval,
-//             period,
-//             user_id,
-//             id_string
-//         WHERE id = $1;
-//         )
-//         VALUES ($1, $2, $3, $4, $5, $6, $7 $8)
-//         RETURNING *;
-
-//         `, [id, nag.task, nag.notes, nag.startTime, nag.interval, nag.period, req.userId, getIdString(30)]);
-//         res.json(result.rows[0]);
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             error: err.message || err
-//         });
-//     }
-// });
-
-// app.delete('/api/lists/:id', async (req, res) => {
-//     const id = req.params.id;
-//     try {
-//         const result = await client.query(`
-//             DELETE FROM lists
-//             WHERE id = $1
-//             RETURNING *;
-//         `, [id]);
-        
-//         res.json(result.rows[0]);
-//     }
-        // catch (err) {
-        //     logError(res, err);
-        // }
-// });
-
 // Cron to find and send nags
-new Cron('* */1 * * * *', sendNags, null, true, 'America/Los_Angeles');
+new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
+
 // Cron to reset recurring nags one second after midnight
 new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
 
