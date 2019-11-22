@@ -32,7 +32,7 @@ const getAllNags = async() => {
             recurs,
             complete,
             id_string AS "idString",
-            users.id AS "deleteId",
+            users.id AS "completeId",
             push_api_key AS "pushApiKey"
             FROM users JOIN nags
             ON users.id = nags.user_id;
@@ -93,7 +93,7 @@ const sendNags = async() => {
                         token: process.env.PUSHOVER_TOKEN,
                         user: nag.pushApiKey,
                         message: nag.task,
-                        url: `https://nagmeapp.herokuapp.com/api/delete/${nag.deleteId}`,
+                        url: `https://nagmeapp.herokuapp.com/api/complete/${nag.completeId}`,
                         url_title: 'CLICK HERE to DELETE NAG'
                     })        
                 });
