@@ -185,8 +185,8 @@ app.get('/api/complete/:id', async(req, res) => {
 new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
 // Cron to reset recurring nags one second after midnight
 new Cron('1 0 0 * * *', updateRecurNags, null, true, 'America/Los_Angeles');
-// Cron for nag to take your umbrella
-new Cron('0 35 9 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
+// Cron for general nag to take your umbrella for your commute
+new Cron('0 45 7 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
 //new Cron('0 45 20 * * *', umbrellaCheck, null, true, 'America/Los_Angeles');
 
 // listen for cron

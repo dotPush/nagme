@@ -80,11 +80,12 @@ const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
     return (                                                  // return true if:
         !snoozed                                              // nag is not snoozed
         //nowTime.isAfter(nag.startTime) &&                   // and it is after start time
-        && minutesSinceStart > 0                              // and it is after start time
+        && minutesSinceStart >= 0                              // and it is after start time
         //&& (nag.endTime && nowTime.isBefore(nag.endTime))   // and if there is an end time and we haven't exceeded it
         && (nag.endTime ? minutesTilEnd > 0 : true)           // and if there is an end time and we haven't exceeded it
         && (dayNumsArr.length > 0 ? isDayOfWeek : true)       // and there are days selected and this is one of them
         && (
+            minutesSinceStart === 0 ||
             minutesSinceStart % nag.interval === 0 ||         // and this is one of the regularly recurring time intervals of a requested nag
             (nag.minutesAfterTheHour && moment().minutes() === nag.minutesAfterTheHour)    // or it is one of the number of minutes after the hour
         )
@@ -156,17 +157,23 @@ const rainIds = async() => {
 }
 
 const umbrellaCheck = async() => {
+    // Portland lat and long
     const lat = '45.5051';
     const long = '122.6750';
-    const checkWeather = await superagent.get(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${long}`);
-    //const actualWeatherData = JSON.parse(weatherData.text);
-    //const rainProbability = parseFloat(actualWeatherData.currently.precipProbability, 10);
-    //HARD CODE PROBABILITY!!!!!
-    const rainProbability = .5;
+    let rainProbability = 0
+    try {
+        const checkWeather = await superagent.get(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${long}`);
+        if(checkWeather){
+            rainProbability = parseFloat(checkWeather.body.currently.precipProbability, 10);
+        }
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+    // Is the probability for rain greater than 40%?
     if(rainProbability > .4){
         const umbrellaNags = await rainIds();
-        console.log('insideumbrella');
-        console.log(umbrellaNags);
         umbrellaNags.forEach(async nag => {
             if (
                 nag.push_api_key &&
@@ -183,7 +190,7 @@ const umbrellaCheck = async() => {
                                 user: nag.push_api_key,
                                 message: 'Greater Than 40% chance of rain',
                                 url: `https://nagmeapp.herokuapp.com/api/complete/${nag.user_id}`,
-                                url_title: 'CLICK HERE to DELETE NAG'
+                                url_title: 'CLICK HERE MARK COMPLETE'
                             })        
                         });
                     }
