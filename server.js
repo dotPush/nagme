@@ -23,7 +23,7 @@ const authRoutes = createAuthRoutes({
             FROM users
             WHERE email = $1;
         `,
-        [email]
+            [email]
         ).then(result => result.rows[0]);
     },
     insertUser(user, hash) {
@@ -32,7 +32,7 @@ const authRoutes = createAuthRoutes({
             VALUES ($1, $2, $3, $4)
             RETURNING id, push_api_key as "pushApiKey", email, display_name as "displayName";
         `,
-        [user.pushApiKey, user.email, hash, user.displayName]
+            [user.pushApiKey, user.email, hash, user.displayName]
         ).then(result => result.rows[0]);
     }
 });
@@ -57,7 +57,7 @@ const logError = (res, err) => {
 };
 
 // *** NAGS ***
-app.get('/api/nags', async(req, res) => {
+app.get('/api/nags', async (req, res) => {
     console.log('getting nags');
     try {
         const result = await client.query(`
@@ -84,7 +84,7 @@ app.get('/api/nags', async(req, res) => {
             FROM nags
             WHERE user_id = $1;
             `,
-        [req.userId]);
+            [req.userId]);
         res.json(result.rows);
     }
     catch (err) {
@@ -92,7 +92,9 @@ app.get('/api/nags', async(req, res) => {
     }
 });
 
-app.post('/api/nags', async(req, res) => {
+app.post('/api/nags', async (req, res) => {
+    // really nice management of complexity throughout this route. The code is obviously
+    // dealing with a complex domain, but it nonetheless very clean and readable
     const nag = req.body;
     try {
         const result = await client.query(`
@@ -120,7 +122,7 @@ app.post('/api/nags', async(req, res) => {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
         RETURNING *;
     `,
-        [nag.task, nag.notes, nag.startTime,
+            [nag.task, nag.notes, nag.startTime,
             nag.endTime === '' ? null : nag.endTime,
             nag.interval,
             nag.minutesAfterHour === '' ? -1 : nag.minutesAfterHour,
@@ -135,14 +137,14 @@ app.post('/api/nags', async(req, res) => {
     }
 });
 
-app.get('/api/nags/:id', async(req, res) => {
+app.get('/api/nags/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const result = await client.query(`
             SELECT * FROM nags
             WHERE id = $1;
         `, [id]);
-     
+
         res.json(result.rows);
     }
     catch (err) {
@@ -150,7 +152,7 @@ app.get('/api/nags/:id', async(req, res) => {
     }
 });
 
-app.delete('/api/nags/:id', async(req, res) => {
+app.delete('/api/nags/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const result = await client.query(`
@@ -158,7 +160,7 @@ app.delete('/api/nags/:id', async(req, res) => {
             WHERE id = $1
             RETURNING *;
         `, [id]);
-        
+
         res.json(result.rows[0]);
     }
     catch (err) {
@@ -166,23 +168,23 @@ app.delete('/api/nags/:id', async(req, res) => {
     }
 });
 
-app.get('/api/delete/:id', async(req, res) => {
-    const id = req.params.id;
+app.get('/api/delete/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        const result = await client.query(`
+        const { result: { rows: [firstRow] } } = await client.query(`
             DELETE FROM nags
             WHERE id = $1
             RETURNING *;
         `, [id]);
-        
-        res.json(result.rows[0]);
+
+        res.json(firstRow);
     }
     catch (err) {
         logError(res, err);
     }
 });
 
-app.get('/api/complete/:id', async(req, res) => {
+app.get('/api/complete/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const result = await client.query(`
@@ -191,7 +193,7 @@ app.get('/api/complete/:id', async(req, res) => {
             WHERE id = $1
             RETURNING *;
         `, [id]);
-        
+
         res.json(result.rows[0]);
         res.send('Marked Complete');
     }
@@ -200,6 +202,7 @@ app.get('/api/complete/:id', async(req, res) => {
     }
 });
 
+// soooo coooooooool
 // Cron to find and send nags
 new Cron('* * * * *', sendNags, null, true, 'America/Los_Angeles');
 // Cron to reset recurring nags one second after midnight
