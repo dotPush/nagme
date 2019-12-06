@@ -1,5 +1,29 @@
 import Component from '../Component.js';
 
+const makeNag = (formData, form) => ({
+    id: formData.get('hidden-id'),
+    task: formData.get('nag-name'),
+    notes: formData.get('notes'),
+    startTime: formData.get('start-time'),
+    endTime: formData.get('end-time'),
+    interval: parseInt(formData.get('interval')),
+    minutesAfterHour: formData.get('minutes-after-hour') !== '' ? parseInt(formData.get('minutes-after-hour')) : -1,
+    mon: !!formData.get('mon'),
+    tue: !!formData.get('tue'),
+    wed: !!formData.get('wed'),
+    thu: !!formData.get('thu'),
+    fri: !!formData.get('fri'),
+    sat: !!formData.get('sat'),
+    sun: !!formData.get('sun'),
+    recurs: form.elements['recurs'][0].checked || false,
+    period: 'm',
+})
+
+const makeCheckbox = (day, loadNag) =>
+    /*html*/`<input 
+        type="checkbox" name=${day} value=${day} ${loadNag && loadNag[day] && 'checked'}>Monday<br>`;
+
+// this component is pretty huge--it might be nice to split it into several components
 class AddNag extends Component {
 
     onRender(form) {
@@ -8,29 +32,19 @@ class AddNag extends Component {
         const myTextArea = form.querySelector('textarea');
         loadNag && (myTextArea.value = loadNag.notes);
 
+        const checkBoxesContainer = form.querySelector('days-boxes');
+
+        ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].forEach(day => {
+            checkBoxesContainer.appendChild(makeCheckbox(day, loadNag));
+        });
+
         form.addEventListener('submit', async event => {
             event.preventDefault();
 
             const formData = new FormData(form);//add or update
 
-            const nag = {
-                id: formData.get('hidden-id'),
-                task: formData.get('nag-name'),
-                notes: formData.get('notes'),
-                startTime: formData.get('start-time'),
-                endTime: formData.get('end-time'),
-                interval: parseInt(formData.get('interval')),
-                minutesAfterHour: formData.get('minutes-after-hour') !== '' ? parseInt(formData.get('minutes-after-hour')) : -1,
-                mon: !!formData.get('mon'),
-                tue: !!formData.get('tue'),
-                wed: !!formData.get('wed'),
-                thu: !!formData.get('thu'),
-                fri: !!formData.get('fri'),
-                sat: !!formData.get('sat'),
-                sun: !!formData.get('sun'),
-                recurs: form.elements['recurs'][0].checked || false,
-                period: 'm',
-            };
+
+            const nag = makeNag(formData, form);
             console.log('formNag', nag);
             try {
                 if (nag.id) {
@@ -42,44 +56,45 @@ class AddNag extends Component {
                 document.activeElement.blur();
             }
             catch (err) {
+                // cool trick!
                 // App will show error, this catch keeps form from clearing
             }
             finally {
-                this.update({ loadNag: {
-                    task: '',
-                    notes: '',
-                } });
+                this.update({
+                    loadNag: {
+                        task: '',
+                        notes: '',
+                    }
+                });
             }
         });
     }
 
     renderHTML() {
-        const loadNag = this.props.loadNag; 
+        const loadNag = this.props.loadNag;
         return /*html*/`
             <form class="add-nag-form">
-                <div class = "add-nag-div">
-                    <p>
-                        <label for="nag-name">Nag Name</label>
-                        <input
-                            type="text"
-                            id="nag-name"
-                            name="nag-name"
-                            placeholder="Add Nag Name"
-                            value="${loadNag ? loadNag.task : ''}"
-                            required>
+            <div class="add-nag-div">
+                <p>
+                    <label for="nag-name">Nag Name</label>
+                    <input
+                        type="text"
+                        id="nag-name"
+                        name="nag-name"
+                        placeholder="Add Nag Name"
+                        value="${loadNag ? loadNag.task : ''}"
+                        required>
                     </p>
                     <br>
-                    <p>
+                        <p>
                         <label for="notes">Notes</label>
                         <textarea
                             id="notes"
                             name="notes"
-
                             value="${loadNag ? loadNag.notes : ''}"
-
                             placeholder="Add Notes"></textarea>
-                    </p>
-                    <br>
+                        </p>
+                        <br>
                     <p>
                         <label for="startTime">Start Time</label>
                         <input
@@ -93,13 +108,13 @@ class AddNag extends Component {
                     <p>
                         <label for="endTime">End Time</label>
                         <input
-                        class="timeInput"
+                            class="timeInput"
                             type="time"
                             id="end-time"
                             name="end-time"
                             value="${loadNag ? loadNag.endTime : ''}">
                     </p>
-                    <br>
+                <br>
                     <p>
                         <label for="interval">Interval (in minutes)</label>
                         <input
@@ -130,28 +145,22 @@ class AddNag extends Component {
                             required>
                     </p>
                     <div class="days-week">
-                    <fieldset><legend>Days of week</legend>
-                        <input type="checkbox" name="mon" value="mon" ${loadNag && loadNag.mon && 'checked'}>Monday<br>
-                        <input type="checkbox" name="tue" value="tue" ${loadNag && loadNag.tue && 'checked'}>Tueday<br>
-                        <input type="checkbox" name="wed" value="wed" ${loadNag && loadNag.wed && 'checked'}>Wednesday<br>
-                        <input type="checkbox" name="thu" value="thu" ${loadNag && loadNag.thu && 'checked'}>Thursday<br>
-                        <input type="checkbox" name="fri" value="fri" ${loadNag && loadNag.fri && 'checked'}>Friday<br>
-                        <input type="checkbox" name="sat" value="sat" ${loadNag && loadNag.sat && 'checked'}>Saturday<br>
-                        <input type="checkbox" name="sun" value="sun" ${loadNag && loadNag.sun && 'checked'}>Sunday<br>
+                        <fieldset class="days-boxes"><legend>Days of week</legend>
+        
                     </fieldset>
-                    <fieldset>
-                    Is this a recurring task?
+                                                                                        <fieldset>
+                                                                                            Is this a recurring task?
                     <input type="radio" name="recurs" value="true" ${loadNag && loadNag.recurs && 'checked'}>Yes
                     <input type="radio" name="recurs" value="false" ${(!loadNag || (loadNag && !loadNag.recurs)) && 'checked'}>No<br>
-                    <button class="save-button" type="submit" name='action'>Save</button>
-                
-                    <input class="buttonClear" type="reset" value="Clear" />
+                                                                                                    <button class="save-button" type="submit" name='action'>Save</button>
+
+                                                                                                    <input class="buttonClear" type="reset" value="Clear" />
                
                     </fieldset>
                     </div>
                 </div>
             </form>
-        `;
+                                                                                        `;
     }
 }
 

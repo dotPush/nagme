@@ -11,7 +11,7 @@ class NagApp extends Component {
     async onRender(dom) {
         const header = new Header({ title: 'My Nags' });
         dom.prepend(header.renderDOM());
-        
+
         const main = dom.querySelector('main');
         const error = dom.querySelector('.error');
         const content = dom.querySelector('.content');
@@ -28,7 +28,7 @@ class NagApp extends Component {
                 try {
                     // part 1: do work on the server
                     const saved = await addNag(nag);
-                    
+
                     // part 2: integrate back into our list
                     const { nags } = this.state;
                     nags.push(saved);
@@ -46,6 +46,7 @@ class NagApp extends Component {
                     loading.update({ loading: false });
                 }
             },
+            // wondering if you could define this function and use it in both `onRemove` props
             onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
@@ -54,14 +55,14 @@ class NagApp extends Component {
                 try {
                     // part 1: do work on the server
                     await removeNag(nag.id);
-                    
+
                     // part 2: integrate back into our list
-                    const { nags } = this.state;        
+                    const { nags } = this.state;
                     // find the index of this type:
                     const index = nags.indexOf(nag);
                     // remove from the list
                     nags.splice(index, 1);
-    
+
                     // part 3: tell component to update
                     nagList.update({ nags });
                 }
@@ -76,11 +77,11 @@ class NagApp extends Component {
         });
         main.appendChild(addNagSection.renderDOM());
 
-        const nagList = new NagList({ 
+        const nagList = new NagList({
             nags: [],
 
             onAnyClick: (nag) => {
-                addNagSection.update({ loadNag:nag });
+                addNagSection.update({ loadNag: nag });
             },
 
             // onUpdate: async nag => {
@@ -91,7 +92,7 @@ class NagApp extends Component {
             //     try {
             //         // part 1: do work on the server
             //         const updated = await updateNag(nag);
-                    
+
             //         // part 2: integrate back into our list
             //         const { nags } = this.state;
             //         // find the index of this type:
@@ -110,7 +111,7 @@ class NagApp extends Component {
             //         loading.update({ loading: false });
             //     }
             // },
-            
+
             onRemove: async nag => {
                 loading.update({ loading: true });
                 // clear prior error
@@ -118,14 +119,14 @@ class NagApp extends Component {
                 try {
                     // part 1: do work on the server
                     await removeNag(nag.id);
-                    
+
                     // part 2: integrate back into our list
-                    const { nags } = this.state;        
+                    const { nags } = this.state;
                     // find the index of this type:
                     const index = nags.indexOf(nag);
                     // remove from the list
                     nags.splice(index, 1);
-    
+
                     // part 3: tell component to update
                     nagList.update({ nags });
                 }
@@ -139,7 +140,7 @@ class NagApp extends Component {
             }
         });
         content.appendChild(nagList.renderDOM());
-       
+
         // initial nag load:
         try {
             console.log('initial-load');

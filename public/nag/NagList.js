@@ -2,13 +2,15 @@ import Component from '../Component.js';
 import NagItem from './NagItem.js';
 
 class NagList extends Component {
-    
+
     onRender(list) {
-        const { nags, onUpdate, onRemove, onAnyClick } = this.props;
-        nags
-            .map(nag => new NagItem({ nag, onUpdate, onRemove, onAnyClick }))
-            .map(nagItem => nagItem.renderDOM())
-            .forEach(dom => list.appendChild(dom));
+        this.props.nags
+            .forEach(nag => list
+                .appendChild(
+                    new NagItem({ nag, ...this.props })
+                        .renderDOM()
+                )
+            ); // not sure if my refactor here is better or just uglier
     }
     renderHTML() {
         return /*html*/`

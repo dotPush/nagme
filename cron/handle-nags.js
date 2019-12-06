@@ -6,14 +6,14 @@ const fetch = require('node-fetch');
 const superagent = require('superagent');
 require('dotenv').config();
 
-const fetchWithError = async(url, options) => {
+const fetchWithError = async (url, options) => {
     const response = await fetch(url, options);
     const data = await response.json();
     if (response.ok) return data;
     else throw data.error;
 };
 
-const getAllNags = async() => {
+const getAllNags = async () => {
     try {
         const result = await client.query(`
             SELECT
@@ -77,7 +77,13 @@ const timeDiff = timeStr => {
 const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
     const minutesSinceStart = timeDiff(nag.startTime);
     const minutesTilEnd = -timeDiff(nag.endTime);
-    return (                                                  // return true if:
+    return (
+        /*
+         I would have like to see this handled through well names vars than through comments 
+         
+         i.e., const nagIsNotPassed = nag.endTime ? minutesTilEnd > 0 : true
+         */
+        // return true if:
         !snoozed                                              // nag is not snoozed
         //nowTime.isAfter(nag.startTime) &&                   // and it is after start time
         && minutesSinceStart >= 0                              // and it is after start time
@@ -92,17 +98,17 @@ const isTimeForNag = (nag, dayNumsArr = [], snoozed = false) => {
     );
 };
 
-const sendNags = async() => {
+const sendNags = async () => {
     console.log('sendNags');
     const allNags = await getAllNags();
     console.log('inside sendNags');
     allNags.forEach(async nag => {
         if (
             nag.pushApiKey
+            // hmmm, curious what edge case this is defending against
             && nag.pushApiKey.length === 30
             && isTimeForNag(nag)
-        )
-        {
+        ) {
             try {
                 const url = `https://api.pushover.net/1/messages.json`;
                 return await fetchWithError(url, {
@@ -116,7 +122,7 @@ const sendNags = async() => {
                         message: nag.task,
                         url: `https://nagmeapp.herokuapp.com/api/complete/${nag.completeId}`,
                         url_title: 'CLICK HERE MARK COMPLETE'
-                    })        
+                    })
                 });
             }
             catch (err) { console.log('error ' + err); }
@@ -124,7 +130,7 @@ const sendNags = async() => {
     });
 };
 
-const updateRecurNags = async() => {
+const updateRecurNags = async () => {
     console.log('updateRecurNags');
     try {
         const result = await client.query(`
@@ -136,11 +142,11 @@ const updateRecurNags = async() => {
         return result.rows;
     }
     catch (err) {
-        console.log(err); 
+        console.log(err);
     }
-}; 
+};
 
-const rainIds = async() => {
+const rainIds = async () => {
     try {
         const result = await client.query(`
             SELECT *
@@ -155,23 +161,23 @@ const rainIds = async() => {
     }
 };
 
-const umbrellaCheck = async() => {
+const umbrellaCheck = async () => {
     // Portland lat and long
     const lat = '45.5051';
     const long = '122.6750';
     let rainProbability = 0;
     try {
         const checkWeather = await superagent.get(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${long}`);
-        if (checkWeather){
+        if (checkWeather) {
             rainProbability = parseFloat(checkWeather.body.currently.precipProbability, 10);
         }
     }
-    catch (err)
-    {
+    catch (err) {
         console.log(err);
     }
     // Is the probability for rain greater than 40%?
-    if (rainProbability > .4){
+    if (rainProbability > .4) {
+        // hmmm, trying to figure out when we insert an UMBRELLACHECK nag
         const umbrellaNags = await rainIds();
         umbrellaNags.forEach(async nag => {
             if (
@@ -190,7 +196,7 @@ const umbrellaCheck = async() => {
                             message: 'Greater Than 40% chance of rain',
                             url: `https://nagmeapp.herokuapp.com/api/complete/${nag.user_id}`,
                             url_title: 'CLICK HERE MARK COMPLETE'
-                        })        
+                        })
                     });
                 }
                 catch (err) { console.log('error ' + err); }
